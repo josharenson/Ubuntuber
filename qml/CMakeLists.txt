@@ -1,0 +1,5 @@
+file(GLOB QML_JS_FILES *.qml *.js)
+
+install(FILES ${QML_JS_FILES}
+    DESTINATION ${APP_DIR}
+)
