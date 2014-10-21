@@ -9,7 +9,7 @@
         }
     },
 
-    "icon" : "@QTBER_ICON",
+    "icon" : "@QTBER_ICON@",
     "maintainer" : "Josh Arenson <josharenson@gmail.com>",
     "name" : "com.josharenson.qtber",
     "title" : "QtBer",
