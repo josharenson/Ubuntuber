@@ -1,6 +1,11 @@
+include_directories(
+    ${LIBCONFIGPP_INCLUDE_DIR}
+)
+
 set(
     UNIT_TEST_SOURCES
 
+    test_config_file.cpp
     test_oauth.cpp
 )
 
@@ -20,4 +25,5 @@ target_link_libraries(
     ${GMOCK_LIBRARY}
     ${GMOCK_MAIN_LIBRARY}
     ${CMAKE_THREAD_LIBS_INIT} #Link in pthread.
+    ${LIBCONFIGPP_LIBRARIES}
 )

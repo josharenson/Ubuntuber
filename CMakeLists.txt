@@ -64,8 +64,20 @@ add_subdirectory(qml)
 
 ######################################
 ######### Backend stuff
-find_package(Oauth)
+find_package(Oauth REQUIRED)
+find_package(LibConfig REQUIRED)
 
+add_subdirectory(backend/)
+
+# Make config file path global so backend/testing can use it
+set(CONFIG_FILE_NAME qtber.cfg)
+install(
+    FILES ${PROJECT_SOURCE_DIR}/${CONFIG_FILE_NAME}
+    DESTINATION ${CMAKE_BINARY_DIR}/install/cfg/
+)
+add_definitions(
+    -DCONFIG_FILE_PATH="${CMAKE_BINARY_DIR}/install/cfg/${CONFIG_FILE_NAME}"
+)
 ######################################
 ######### Testing stuff
 find_package(Gtest REQUIRED)
