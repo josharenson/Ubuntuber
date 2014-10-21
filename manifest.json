@@ -1,0 +1,21 @@
+{
+    "description" : "An Uber clone for Ubuntu Touch",
+    "framework" : "ubuntu-sdk-14.10-dev2",
+    "architecture" : "armhf",
+    "hooks" : {
+        "qtber": {
+            "apparmor" : "qtber-apparmor.json",
+            "desktop" : "@DESKTOP_FILE@"
+        }
+    },
+
+    "icon" : "@QTBER_ICON",
+    "maintainer" : "Josh Arenson <josharenson@gmail.com>",
+    "name" : "com.josharenson.qtber",
+    "title" : "QtBer",
+    "version" : "0.0.1@BZR_REVNO@",
+    "x-source" : {
+        "vcs-bzr" : "@BZR_SOURCE@",
+        "vcs-bzr-revno" : "@BZR_REVNO@"
+    }
+}

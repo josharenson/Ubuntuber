@@ -1,0 +1,51 @@
+
+# Find the CUnit includes and library
+#
+# This module defines
+# LIBCONFIG_INCLUDE_DIR, where to find cppunit include files, etc.
+# LIBCONFIG_LIBRARIES, the libraries to link against to use CppUnit.
+# LIBCONFIG_STATIC_LIBRARIY_PATH
+# LIBCONFIG_FOUND, If false, do not try to use CppUnit.
+
+MESSAGE("Searching for libconfig library")
+
+FIND_PATH(LIBCONFIGPP_INCLUDE_DIR libconfig.h++
+  /usr/local/include
+  /usr/include
+  ~/libs/include
+  ~/include
+)
+
+FIND_LIBRARY(LIBCONFIGPP_LIBRARY config++
+  /usr/local/lib
+  /usr/lib
+  ~/libs/lib
+)
+
+FIND_LIBRARY(LIBCONFIGPP_STATIC_LIBRARY "libconfig++${CMAKE_STATIC_LIBRARY_SUFFIX}"
+    /usr/local/lib
+    /usr/lib
+    ~/libs/lib
+)
+
+IF(LIBCONFIGPP_INCLUDE_DIR)
+  IF(LIBCONFIGPP_LIBRARY)
+    SET(LIBCONFIGPP_FOUND TRUE)
+    SET(LIBCONFIGPP_LIBRARIES ${LIBCONFIGPP_LIBRARY})
+    SET(LIBCONFIGPP_STATIC_LIBRARY_PATH ${LIBCONFIGPP_STATIC_LIBRARY})
+  ENDIF(LIBCONFIGPP_LIBRARY)
+ENDIF(LIBCONFIGPP_INCLUDE_DIR)
+
+IF (LIBCONFIGPP_FOUND)
+    MESSAGE(STATUS "Found LibConfig++: ${LIBCONFIGPP_LIBRARIES}" )
+    MESSAGE(STATUS "static LibConfigpp path: ${LIBCONFIGPP_STATIC_LIBRARY_PATH}")
+ENDIF (LIBCONFIGPP_FOUND)
+
+IF (NOT LIBCONFIGPP_FOUND)
+    IF (LibConfig_FIND_REQUIRED)
+    MESSAGE(SEND_ERROR "Could NOT find LibConfig")
+    ENDIF (LibConfig_FIND_REQUIRED)
+ENDIF(NOT LIBCONFIGPP_FOUND)
+
+MARK_AS_ADVANCED(LIBCONFIGPP_INCLUDE_DIR LIBCONFIGPP_LIBRARIES)
+

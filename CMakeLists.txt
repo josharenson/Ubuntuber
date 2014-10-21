@@ -83,3 +83,34 @@ add_definitions(
 find_package(Gtest REQUIRED)
 include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
 add_subdirectory(tests/)
+
+######################################
+######### Packaging Stuff
+option(CLICK_MODE "Installs to a contained location" off)
+if(CLICK_MODE)
+    if(NOT DEFINED BZR_SOURCE)
+        set(BZR_SOURCE "lp:qtber")
+    endif(NOT DEFINED BZR_SOURCE)
+    set(CMAKE_INSTALL_PREFIX /)
+    set(QTBER_DIR /)
+    set(CMAKE_INSTALL_BINDIR /)
+    set(PLUGIN_BASE lib/${CMAKE_LIBRARY_ARCHITECTURE})
+    set(DESKTOP_EXEC "./${QTBER}")
+    set(QTBER_ICON "${CMAKE_INSTALL_DATADIR}/icons/qtber.svg")
+
+    install(FILES qtber.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons)
+    configure_file(manifest.json ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
+    add_definitions("-DCLICK_MODE=1")
+
+    if(NOT BZR_REVNO)
+        set(BZR_REVNO "latest")
+    endif(NOT  BZR_REVNO)
+else(CLICK_MODE)
+    set(QTBER_ICON "qtber")
+    set(QTBER_DIR ${CMAKE_INSTALL_DATADIR}/${QTBER})
+    set(DESKTOP_EXEC ${QTBER})
+endif(CLICK_MODE)
+
