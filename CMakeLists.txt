@@ -70,18 +70,6 @@ add_subdirectory(backend/)
 
 # Make config file path global so backend/testing can use it
 set(CONFIG_FILE_NAME qtber.cfg)
-install(
-    FILES ${PROJECT_SOURCE_DIR}/${CONFIG_FILE_NAME}
-    DESTINATION ${CMAKE_BINARY_DIR}/install/cfg/
-)
-add_definitions(
-    -DCONFIG_FILE_PATH="${CMAKE_BINARY_DIR}/install/cfg/${CONFIG_FILE_NAME}"
-)
-######################################
-######### Testing stuff
-find_package(Gtest REQUIRED)
-include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
-add_subdirectory(tests/)
 
 ######################################
 ######### Packaging Stuff
@@ -90,6 +78,7 @@ set(QTBER qtber)
 set(DESKTOP_FILE qtber.desktop)
 
 if(CLICK_MODE)
+    message("Configured to create a click package")
     if(NOT DEFINED BZR_SOURCE)
         set(BZR_SOURCE "lp:qtber")
     endif(NOT DEFINED BZR_SOURCE)
@@ -99,15 +88,25 @@ if(CLICK_MODE)
     set(PLUGIN_BASE lib/${CMAKE_LIBRARY_ARCHITECTURE})
     set(DESKTOP_EXEC "./${QTBER}")
 
-    # FIXME Removing the / here is a workarround, I'm not sure why
-    # this doesn't work as expected.
-    set(QTBER_ICON "${CMAKE_INSTALL_DATADIR}icons/qtber.svg")
+    ###############################
+    ###### Install resources, this is order dependent
 
-    install(FILES qtber.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons)
+    # Install app icon
+    set(QTBER_ICON "icons/qtber.svg")
+    install(FILES qtber.svg DESTINATION icons/)
 
-    # Config and install manifest.json
-    configure_file(manifest.json ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json
+    # Configure and install config file
+    add_definitions(
+        -DCONFIG_FILE_PATH="../../package/${CONFIG_FILE_NAME}"
+    )
+    install(
+        FILES ${CONFIG_FILE_NAME}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
+
+    # Config and install apparmor
+    configure_file(qtber-apparmor.json ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json
         DESTINATION ${CMAKE_INSTALL_PREFIX}
     )
 
@@ -117,9 +116,9 @@ if(CLICK_MODE)
         DESTINATION ${CMAKE_INSTALL_PREFIX}
     )
 
-    # Config and install apparmor
-    configure_file(qtber-apparmor.json ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json
+    # Config and install manifest.json
+    configure_file(manifest.json ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json
         DESTINATION ${CMAKE_INSTALL_PREFIX}
     )
 
@@ -140,3 +139,10 @@ else(CLICK_MODE)
         DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
     )
 endif(CLICK_MODE)
+
+
+######################################
+######### Testing stuff
+find_package(Gtest REQUIRED)
+include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
+add_subdirectory(tests/)
