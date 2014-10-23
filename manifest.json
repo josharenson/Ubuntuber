@@ -11,7 +11,7 @@
 
     "icon" : "@QTBER_ICON@",
     "maintainer" : "Josh Arenson <josharenson@gmail.com>",
-    "name" : "com.josharenson.qtber",
+    "name" : "com.gmail.josharenson.qtber",
     "title" : "QtBer",
     "version" : "0.0.1@BZR_REVNO@",
     "x-source" : {

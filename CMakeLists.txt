@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.9)
 
-
 ######################################
 ##### Cmake stuff
 # Default install location. Must be set here, before setting the project.
@@ -99,7 +98,10 @@ if(CLICK_MODE)
     set(CMAKE_INSTALL_BINDIR /)
     set(PLUGIN_BASE lib/${CMAKE_LIBRARY_ARCHITECTURE})
     set(DESKTOP_EXEC "./${QTBER}")
-    set(QTBER_ICON "${CMAKE_INSTALL_DATADIR}/icons/qtber.svg")
+
+    # FIXME Removing the / here is a workarround, I'm not sure why
+    # this doesn't work as expected.
+    set(QTBER_ICON "${CMAKE_INSTALL_DATADIR}icons/qtber.svg")
 
     install(FILES qtber.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons)
 
@@ -112,6 +114,12 @@ if(CLICK_MODE)
     # Config and install desktop file
     configure_file(${DESKTOP_FILE}.in ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE})
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}
+    )
+
+    # Config and install apparmor
+    configure_file(qtber-apparmor.json ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json
         DESTINATION ${CMAKE_INSTALL_PREFIX}
     )
 
