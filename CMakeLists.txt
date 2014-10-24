@@ -42,7 +42,76 @@ add_custom_target(cppcheck COMMAND cppcheck --enable=all -q --error-exitcode=2
 
 add_subdirectory(cmake/)
 
-set(APP_DIR ${CMAKE_INSTALL_DATADIR}/qtber)
+######################################
+######### Backend stuff
+find_package(Oauth REQUIRED)
+find_package(LibConfig REQUIRED)
+
+add_subdirectory(backend/)
+
+# Make config file path global so backend/testing can use it
+set(CONFIG_FILE qtber.cfg)
+
+######################################
+######### Packaging Stuff
+option(CLICK_MODE "Installs to a contained location" off)
+set(QTBER qtber)
+
+set(APP_ARMOR_FILE "qtber-apparmor.json")
+set(DESKTOP_FILE "qtber.desktop")
+set(ICON_FILE "qtber.svg")
+set(MANIFEST_FILE "manifest.json")
+
+if(CLICK_MODE)
+    message("Configured to create a click package")
+    set(INSTALL_ROOT "package")
+    set(PACKAGE_ROOT "${CMAKE_BINARY_DIR}/${INSTALL_ROOT}")
+    file(MAKE_DIRECTORY ${PACKAGE_ROOT})
+    set(APP_DIR "${PACKAGE_ROOT}")
+
+    set(APP_ARMOR_DEST "${PACKAGE_ROOT}")
+    set(DESKTOP_FILE_DEST "${PACKAGE_ROOT}")
+    set(ICON_DEST "${PACKAGE_ROOT}/icons")
+    set(CONFIG_FILE_DEST "${PACKAGE_ROOT}")
+    set(MANIFEST_DEST "${PACKAGE_ROOT}")
+    set(DESKTOP_EXEC "./${QTBER}")
+
+    add_definitions("-DCLICK_MODE=1")
+
+else(CLICK_MODE)
+    set(INSTALL_ROOT "/")
+    set(APP_DIR "${CMAKE_BINARY_DIR}")
+    set(APP_ARMOR_DEST "${CMAKE_BINARY_DIR}")
+    set(ICON_DEST "${CMAKE_BINARY_DIR}/icons")
+    set(CONFIG_FILE_DEST "${CMAKE_BINARY_DIR}")
+    set(DESKTOP_FILE_DEST "${CMAKE_BINARY_DIR}")
+    set(DESKTOP_EXEC "./${QTBER}")
+endif(CLICK_MODE)
+
+if(NOT DEFINED BZR_SOURCE)
+    set(BZR_SOURCE "lp:qtber")
+endif(NOT DEFINED BZR_SOURCE)
+
+if(NOT BZR_REVNO)
+    set(BZR_REVNO "latest")
+endif(NOT  BZR_REVNO)
+
+# Install the config file
+install(FILES ${CONFIG_FILE} DESTINATION ${CONFIG_FILE_DEST})
+add_definitions("-DCONFIG_FILE_PATH=\"${CONFIG_FILE_DEST}/${CONFIG_FILE}\"")
+
+# Configure and install the apparmor
+configure_file("${APP_ARMOR_FILE}" "${APP_ARMOR_DEST}")
+
+# Install the stupid icon
+set(RELATIVE_ICON_PATH "icons/${ICON_FILE}")
+install(FILES ${ICON_FILE} DESTINATION ${ICON_DEST})
+
+# Configure and install the dekstop file
+configure_file("${DESKTOP_FILE}" "${DESKTOP_FILE_DEST}")
+
+# Configure and install the manifest
+configure_file("${MANIFEST_FILE}" "${MANIFEST_DEST}")
 
 ######################################
 ######### QML Stuff
@@ -60,86 +129,6 @@ find_package(Qt5Quick 5.2 REQUIRED)
 find_package(Qt5Gui 5.2 REQUIRED)
 
 add_subdirectory(qml)
-
-######################################
-######### Backend stuff
-find_package(Oauth REQUIRED)
-find_package(LibConfig REQUIRED)
-
-add_subdirectory(backend/)
-
-# Make config file path global so backend/testing can use it
-set(CONFIG_FILE_NAME qtber.cfg)
-
-######################################
-######### Packaging Stuff
-option(CLICK_MODE "Installs to a contained location" off)
-set(QTBER qtber)
-set(DESKTOP_FILE qtber.desktop)
-
-if(CLICK_MODE)
-    message("Configured to create a click package")
-    if(NOT DEFINED BZR_SOURCE)
-        set(BZR_SOURCE "lp:qtber")
-    endif(NOT DEFINED BZR_SOURCE)
-    set(CMAKE_INSTALL_PREFIX /)
-    set(QTBER_DIR /)
-    set(CMAKE_INSTALL_BINDIR /)
-    set(PLUGIN_BASE lib/${CMAKE_LIBRARY_ARCHITECTURE})
-    set(DESKTOP_EXEC "./${QTBER}")
-
-    ###############################
-    ###### Install resources, this is order dependent
-
-    # Install app icon
-    set(QTBER_ICON "icons/qtber.svg")
-    install(FILES qtber.svg DESTINATION icons/)
-
-    # Configure and install config file
-    add_definitions(
-        -DCONFIG_FILE_PATH="../../package/${CONFIG_FILE_NAME}"
-    )
-    install(
-        FILES ${CONFIG_FILE_NAME}
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
-
-    # Config and install apparmor
-    configure_file(qtber-apparmor.json ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/qtber-apparmor.json
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
-
-    # Config and install desktop file
-    configure_file(${DESKTOP_FILE}.in ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE})
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
-
-    # Config and install manifest.json
-    configure_file(manifest.json ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json
-        DESTINATION ${CMAKE_INSTALL_PREFIX}
-    )
-
-    add_definitions("-DCLICK_MODE=1")
-
-    if(NOT BZR_REVNO)
-        set(BZR_REVNO "latest")
-    endif(NOT  BZR_REVNO)
-
-else(CLICK_MODE)
-    set(QTBER_ICON "qtber")
-    set(QTBER_DIR ${CMAKE_INSTALL_DATADIR}/${QTBER})
-    set(DESKTOP_EXEC ${QTBER})
-
-    # Configure and install desktop file
-    configure_file(${DESKTOP_FILE}.in ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE})
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
-    )
-endif(CLICK_MODE)
-
 
 ######################################
 ######### Testing stuff

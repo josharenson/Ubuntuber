@@ -7,9 +7,10 @@ fi
 
 pushd builddir/
 
-##### Execiting from build dir
+##### Executing from build dir
 cmake .. -DCLICK_MODE=on -DBZR_REVNO=$(cd ..; bzr revno)
-make DESTDIR=package install
+make install
+#make DESTDIR=package install
 click build package
 
 popd

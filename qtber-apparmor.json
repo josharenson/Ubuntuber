@@ -1,0 +1,6 @@
+{
+    "policy_groups" : [
+        "location"
+    ],
+    "policy_version" : 1.2
+}
