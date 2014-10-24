@@ -1,12 +1,12 @@
 include_directories(
-    ${LIBCONFIGPP_INCLUDE_DIR}
+    ../../backend/include
 )
 
 set(
     UNIT_TEST_SOURCES
 
     test_config_file.cpp
-    test_oauth.cpp
+    test_uber_api.cpp
 )
 
 link_directories(${LIBRARY_OUTPUT_PATH})

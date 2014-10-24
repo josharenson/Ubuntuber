@@ -44,6 +44,7 @@ add_subdirectory(cmake/)
 
 ######################################
 ######### Backend stuff
+find_library(CURL_LIBRARY NAMES curl curllib libcurl_imp curllib_static REQUIRED)
 find_package(Oauth REQUIRED)
 find_package(LibConfig REQUIRED)
 
@@ -67,8 +68,8 @@ if(CLICK_MODE)
     set(INSTALL_ROOT "package")
     set(PACKAGE_ROOT "${CMAKE_BINARY_DIR}/${INSTALL_ROOT}")
     file(MAKE_DIRECTORY ${PACKAGE_ROOT})
-    set(APP_DIR "${PACKAGE_ROOT}")
 
+    set(APP_DIR "${PACKAGE_ROOT}")
     set(APP_ARMOR_DEST "${PACKAGE_ROOT}")
     set(DESKTOP_FILE_DEST "${PACKAGE_ROOT}")
     set(ICON_DEST "${PACKAGE_ROOT}/icons")
