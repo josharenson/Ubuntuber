@@ -11,6 +11,10 @@ StyledItem {
     readonly property int h_ten_percent: parent.height * .1
     readonly property int w_ten_percent: parent.width  * .1
 
+    BackgroundVideo {
+        //video_source: "../assets/wth-02.mpg"
+    }
+
     StyledButton {
         id: register_button
 
