@@ -43,22 +43,12 @@ add_custom_target(cppcheck COMMAND cppcheck --enable=all -q --error-exitcode=2
 add_subdirectory(cmake/)
 
 ######################################
-######### Backend stuff
-find_library(CURL_LIBRARY NAMES curl curllib libcurl_imp curllib_static REQUIRED)
-find_package(Oauth REQUIRED)
-find_package(LibConfig REQUIRED)
-
-add_subdirectory(backend/)
-
-# Make config file path global so backend/testing can use it
-set(CONFIG_FILE qtber.cfg)
-
-######################################
 ######### Packaging Stuff
 option(CLICK_MODE "Installs to a contained location" off)
 set(QTBER qtber)
 
 set(APP_ARMOR_FILE "qtber-apparmor.json")
+set(CONFIG_FILE qtber.cfg)
 set(DESKTOP_FILE "qtber.desktop")
 set(ICON_FILE "qtber.svg")
 set(MANIFEST_FILE "manifest.json")
@@ -130,6 +120,15 @@ find_package(Qt5Quick 5.2 REQUIRED)
 find_package(Qt5Gui 5.2 REQUIRED)
 
 add_subdirectory(qml)
+
+######################################
+######### Backend stuff
+find_library(CURL_LIBRARY NAMES curl curllib libcurl_imp curllib_static REQUIRED)
+find_package(Oauth REQUIRED)
+find_package(LibConfig REQUIRED)
+
+add_subdirectory(backend/)
+
 
 ######################################
 ######### Testing stuff

@@ -8,6 +8,10 @@ class UberAPI
 {
     public:
         UberAPI();
+        UberAPI(int);
+
+        // getters
+        const std::string client_id();
 
     private:
         CURL *m_curl;
