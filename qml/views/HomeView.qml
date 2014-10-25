@@ -28,11 +28,6 @@ StyledItem {
         anchors.leftMargin: w_ten_percent - units.gu(0.5)
 
         text: "Register"
-
-        onClicked: {
-            console.log("register_button: clicked")
-            parent.changeViews("views/LoginView.qml")
-        }
     }
 
     StyledButton {
@@ -48,6 +43,11 @@ StyledItem {
         anchors.rightMargin: w_ten_percent - units.gu(0.5)
 
         text: "Login"
+
+        onClicked: {
+            console.log("register_button: clicked")
+            parent.changeViews("views/LoginView.qml")
+        }
     }
 }
 

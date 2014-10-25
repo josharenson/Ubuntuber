@@ -1,6 +1,6 @@
 #include <iostream>
-#include <memory>
 #include <libconfig.h++>
+#include <oauth.h>
 
 #include <uberapi.h>
 
@@ -24,6 +24,9 @@ UberAPI::UberAPI()
     {
        std::string client_id = cfg.lookup("oauth_client_id");
        m_client_id = client_id;
+
+       std::string authorize_url = cfg.lookup("oauth_authorize_url");
+       m_authorize_url = authorize_url;
     }
     catch (const libconfig::SettingNotFoundException &nfex)
     {
@@ -31,7 +34,16 @@ UberAPI::UberAPI()
     }
 }
 
+const std::string UberAPI::authorize_url()
+{
+    return m_authorize_url;
+}
+
 const std::string UberAPI::client_id()
 {
     return m_client_id;
+}
+
+void UberAPI::authenticate()
+{
 }
