@@ -28,7 +28,7 @@ Rectangle {
         }
 
         WebView {
-            id: loginView
+            id: login_webview
 
             visible: false
             anchors.fill: parent
@@ -42,7 +42,7 @@ Rectangle {
             anchors.right: parent.right
             anchors.bottom: parent.bottom
             Text {
-                text: loginView.url
+                text: login_webview.url
             }
         }
 
@@ -50,7 +50,7 @@ Rectangle {
             State {
                 name: "Login"
                 PropertyChanges {
-                    target: loginView
+                    target: login_webview
                     visible: true
                     url: "https://login.uber.com/oauth/authorize?client_id=1xRXYLdYXuNSQBSfmHzbDfnNUmZtuxZn&response_type=code&redirect_uri=qrc://LoginView.qml#code"
                 }
@@ -58,7 +58,7 @@ Rectangle {
             State {
                 name: "AuthDone"
                 PropertyChanges {
-                    target: loginView
+                    target: login_webview
                     visible: false
                     opacity: 0
                 }
