@@ -13,7 +13,7 @@ Rectangle {
     MediaPlayer {
         id: player
         autoPlay: true
-        source: "../assets/wth-02.mpg"
+        source: video_source
         loops: Animation.Infinite
     }
 

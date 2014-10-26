@@ -12,7 +12,7 @@ StyledItem {
     readonly property int w_ten_percent: parent.width  * .1
 
     BackgroundVideo {
-        //video_source: "../assets/wth-02.mpg"
+        video_source: "../assets/wth-02.mpg"
     }
 
     StyledButton {

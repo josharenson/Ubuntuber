@@ -1,10 +1,11 @@
 .import QtQuick.LocalStorage 2.0 as Sql
 
 function urlChanged(url) {
+    console.log("JOSH"+url);
     var authorized = false;
     var mUrl = url.toString();
     var token = "";
-    if (mUrl.indexOf("https://stackexchange.com") > -1) {
+    if (mUrl.indexOf("https://login.uber.com") > -1) {
         var query = mUrl.substring(mUrl.indexOf('#') + 1);
         var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
@@ -18,8 +19,8 @@ function urlChanged(url) {
         }
     }
     if (authorized) {
-        stackOAuth.token = token;
-        stackOAuth.state = "AuthDone";
+        stack_oauth.token = token;
+        stack_oauth.state = "AuthDone";
     }
 }
 
@@ -41,11 +42,11 @@ function checkToken() {
         tx.executeSql('CREATE TABLE IF NOT EXISTS Token(token TEXT)');
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
-            stackOAuth.token = rs.rows.item(0).token
-            stackOAuth.state = "AuthDone"
+            stack_oauth.token = rs.rows.item(0).token
+            stack_oauth.state = "AuthDone"
             console.log("Auth done...")
         } else {
-            stackOAuth.state = "Login"
+            stack_oauth.state = "Login"
             console.log("Logging in....")
         }
     });
