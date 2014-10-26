@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtWebKit 3.0
+import "../components"
 import "../assets/OAuth.js" as OAuth
 
 Rectangle {
@@ -24,7 +25,18 @@ Rectangle {
 
         anchors.fill: parent
         Component.onCompleted: {
-            OAuth.checkToken()
+            // Set this to true during development to always force an authentication
+            OAuth.checkToken(true)
+        }
+
+        LoadingAnimation {
+            id: loading_animation
+
+            height: units.gu(4)
+            width: units.gu(4)
+
+            visible: false
+            z: 10
         }
 
         WebView {
@@ -35,6 +47,14 @@ Rectangle {
 
             onUrlChanged: {
                 OAuth.urlChanged(url)
+            }
+
+            onLoadingChanged: {
+                if (loadRequest.status == WebView.LoadStartedStatus) {
+                    loading_animation.visible = true
+                } else {
+                    loading_animation.visible = false
+                }
             }
         }
 

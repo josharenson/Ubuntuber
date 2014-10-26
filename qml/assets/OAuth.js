@@ -34,7 +34,7 @@ function saveToken(token) {
     });
 }
 
-function checkToken() {
+function checkToken(force_auth) {
     var db = Sql.LocalStorage.openDatabaseSync("Token", "1.0", "the token", 1);
     var dataStr = "SELECT * FROM Token";
     db.transaction(function(tx) {
@@ -42,7 +42,7 @@ function checkToken() {
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
             stack_oauth.token = rs.rows.item(0).token
-            stack_oauth.state = "AuthDone"
+            stack_oauth.state = force_auth ? "Login" : "AuthDone"
             console.log("Auth done...")
         } else {
             stack_oauth.state = "Login"
