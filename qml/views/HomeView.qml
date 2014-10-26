@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Ubuntu.Components 1.1
 import "../components"
 
-StyledItem {
+StyledPage {
     id: login_view
 
     readonly property int button_height: units.gu(5)
@@ -46,7 +46,7 @@ StyledItem {
 
         onClicked: {
             console.log("register_button: clicked")
-            parent.changeViews("views/LoginView.qml")
+            parent.changeViews("LoginView.qml")
         }
     }
 }

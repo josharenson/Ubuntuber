@@ -3,7 +3,7 @@ import QtWebKit 3.0
 import "../components"
 import "../assets/OAuth.js" as OAuth
 
-Rectangle {
+StyledPage {
 
     height: parent.height
     width: parent.width

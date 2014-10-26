@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.0
-import "views"
+import "components/"
+import "views/"
 
 MainView {
     id: main
@@ -14,19 +15,16 @@ MainView {
      * straight to the map if they are
      */
     Component.onCompleted: {
-        main_loader.source = "views/HomeView.qml"
+        page_stack.push(Qt.resolvedUrl("views/HomeView.qml"))
     }
 
-    Loader {
-        id: main_loader
-
-        height: parent.height
-        width:  parent.width
+    PageStack {
+        id: page_stack
 
         Connections {
-            target: main_loader.item
+            target: page_stack.currentPage
             onChangeViews: {
-                main_loader.source = viewName
+                page_stack.push(Qt.resolvedUrl("views/" + viewName))
             }
         }
     }
