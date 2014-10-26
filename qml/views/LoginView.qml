@@ -15,6 +15,7 @@ StyledPage {
         visible: false
         anchors.centerIn: parent
         text: "Log in successful!"
+        changeViews("MapView.qml")
     }
 
     Item {
@@ -57,17 +58,6 @@ StyledPage {
                 }
             }
         }
-
-        /*Rectangle {
-            height: 50
-            width: parent.width
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            Text {
-                text: login_webview.url
-            }
-        }*/
 
         states: [
             State {

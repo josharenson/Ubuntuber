@@ -28,6 +28,10 @@ StyledPage {
         anchors.leftMargin: w_ten_percent - units.gu(0.5)
 
         text: "Register"
+
+        onClicked: {
+            parent.changeViews("RegistrationView.qml")
+        }
     }
 
     StyledButton {
@@ -45,7 +49,6 @@ StyledPage {
         text: "Login"
 
         onClicked: {
-            console.log("register_button: clicked")
             parent.changeViews("LoginView.qml")
         }
     }
