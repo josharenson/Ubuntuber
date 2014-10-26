@@ -1,16 +1,15 @@
 .import QtQuick.LocalStorage 2.0 as Sql
 
 function urlChanged(url) {
-    console.log("JOSH"+url);
     var authorized = false;
     var mUrl = url.toString();
     var token = "";
-    if (mUrl.indexOf("https://login.uber.com") > -1) {
-        var query = mUrl.substring(mUrl.indexOf('#') + 1);
+    if (mUrl.indexOf("https://localhost") > -1) {
+        var query = mUrl.substring(mUrl.indexOf('?') + 1);
         var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
-            if (pair[0] == "access_token") {
+            if (pair[0] == "code") {
                 authorized = true;
                 token = pair[1];
                 console.log("Found token: " + token)

@@ -32,10 +32,13 @@ Rectangle {
 
             visible: false
             anchors.fill: parent
-            onUrlChanged: OAuth.urlChanged(url)
+
+            onUrlChanged: {
+                OAuth.urlChanged(url)
+            }
         }
 
-        Rectangle {
+        /*Rectangle {
             height: 50
             width: parent.width
             anchors.left: parent.left
@@ -44,7 +47,7 @@ Rectangle {
             Text {
                 text: login_webview.url
             }
-        }
+        }*/
 
         states: [
             State {
@@ -52,7 +55,7 @@ Rectangle {
                 PropertyChanges {
                     target: login_webview
                     visible: true
-                    url: "https://login.uber.com/oauth/authorize?client_id=1xRXYLdYXuNSQBSfmHzbDfnNUmZtuxZn&response_type=code&redirect_uri=qrc://LoginView.qml#code"
+                    url: "https://login.uber.com/oauth/authorize?client_id=1xRXYLdYXuNSQBSfmHzbDfnNUmZtuxZn&response_type=code"
                 }
             },
             State {
