@@ -15,7 +15,9 @@ StyledPage {
         visible: false
         anchors.centerIn: parent
         text: "Log in successful!"
-        changeViews("MapView.qml")
+        //Conponent.onCompleted: {
+        //    changeViews("MapView.qml")
+        //}
     }
 
     Item {

@@ -127,7 +127,7 @@ find_library(CURL_LIBRARY NAMES curl curllib libcurl_imp curllib_static REQUIRED
 find_package(Oauth REQUIRED)
 find_package(LibConfig REQUIRED)
 
-add_subdirectory(backend/)
+add_subdirectory(QtBer/)
 
 
 ######################################

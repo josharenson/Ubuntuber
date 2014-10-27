@@ -6,7 +6,6 @@ set(
     UNIT_TEST_SOURCES
 
     test_config_file.cpp
-    test_uber_api.cpp
 )
 
 link_directories(${LIBRARY_OUTPUT_PATH})
