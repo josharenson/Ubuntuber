@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class ConfigFile : QObject
+class ConfigFile : public QObject
 {
     Q_OBJECT
 

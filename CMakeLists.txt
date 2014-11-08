@@ -143,10 +143,6 @@ file(GLOB_RECURSE QMLDIR_FILES qmldir)
 add_custom_target(QMLDIR_TARGET ALL SOURCES ${QMLDIR_FILES})
 
 ######################################
-######### 3rd Party
-add_subdirectory(3rdParty/qtm-geoservices-extras)
-
-######################################
 ######### Testing stuff
 find_package(Gtest REQUIRED)
 include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
