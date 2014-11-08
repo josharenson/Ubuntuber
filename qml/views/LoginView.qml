@@ -4,9 +4,12 @@ import "../components"
 import "../assets/OAuth.js" as OAuth
 
 StyledPage {
+    id: login_view
 
     height: parent.height
     width: parent.width
+
+    visible: false
 
     // For debugging now, load a new view here
     Text {
@@ -15,9 +18,10 @@ StyledPage {
         visible: false
         anchors.centerIn: parent
         text: "Log in successful!"
-        //Conponent.onCompleted: {
-        //    changeViews("MapView.qml")
-        //}
+        /*onVisibleChanged: {
+            if (visible)
+                parent.changeViews("MapView.qml")
+        }*/
     }
 
     Item {
@@ -29,7 +33,7 @@ StyledPage {
         anchors.fill: parent
         Component.onCompleted: {
             // Set this to true during development to always force an authentication
-            OAuth.checkToken(true)
+            OAuth.checkToken(false)
         }
 
         LoadingAnimation {
@@ -61,6 +65,21 @@ StyledPage {
             }
         }
 
+        // FIXME This jank shit works around a bug 1390593
+        Timer {
+            id: the_timer
+            interval: 1000; running: false; repeat: false
+            onTriggered: {
+                console.log("TIMER TRIGGERED")
+                login_view.changeViews("MapView.qml")
+            }
+        }
+        onStateChanged: {
+            if (state == "AuthDone") {
+                the_timer.running = true
+            }
+        }
+
         states: [
             State {
                 name: "Login"
@@ -76,10 +95,6 @@ StyledPage {
                     target: login_webview
                     visible: false
                     opacity: 0
-                }
-                PropertyChanges {
-                    target: next_state
-                    visible: true
                 }
             }
         ]

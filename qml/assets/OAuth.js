@@ -42,8 +42,8 @@ function checkToken(force_auth) {
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
             stack_oauth.token = rs.rows.item(0).token
-            stack_oauth.state = force_auth ? "Login" : "AuthDone"
             console.log("Auth done...")
+            stack_oauth.state = force_auth ? "Login" : "AuthDone"
         } else {
             stack_oauth.state = "Login"
             console.log("Logging in....")

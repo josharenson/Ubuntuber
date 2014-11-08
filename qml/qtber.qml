@@ -23,7 +23,9 @@ MainView {
         Connections {
             target: page_stack.currentPage
             onChangeViews: {
+                console.log("Loding view: views/" + viewName)
                 page_stack.push(Qt.resolvedUrl("views/" + viewName))
+                console.log("Current page is: " + page_stack.currentPage)
             }
         }
     }

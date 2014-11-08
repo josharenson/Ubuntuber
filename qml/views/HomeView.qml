@@ -3,7 +3,7 @@ import Ubuntu.Components 1.1
 import "../components"
 
 StyledPage {
-    id: login_view
+    id: home_view
 
     readonly property int button_height: units.gu(5)
     readonly property int button_width:  parent.width * .4

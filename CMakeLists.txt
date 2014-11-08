@@ -123,12 +123,28 @@ add_subdirectory(qml)
 
 ######################################
 ######### Backend stuff
-find_library(CURL_LIBRARY NAMES curl curllib libcurl_imp curllib_static REQUIRED)
+
 find_package(Oauth REQUIRED)
 find_package(LibConfig REQUIRED)
 
 add_subdirectory(QtBer/)
 
+
+include_directories(
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Quick_INCLUDE_DIRS}
+    ${Qt5Multimedia_INCLUDE_DIRS}
+    ${Qt5Gui_INCLUDE_DIRS}
+)
+
+file(GLOB_RECURSE QMLDIR_FILES qmldir)
+add_custom_target(QMLDIR_TARGET ALL SOURCES ${QMLDIR_FILES})
+
+######################################
+######### 3rd Party
+add_subdirectory(3rdParty/qtm-geoservices-extras)
 
 ######################################
 ######### Testing stuff
