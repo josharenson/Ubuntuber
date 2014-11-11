@@ -61,23 +61,30 @@ if(CLICK_MODE)
 
     set(APP_DIR "${PACKAGE_ROOT}")
     set(APP_ARMOR_DEST "${PACKAGE_ROOT}")
+    set(CONFIG_FILE_DEST "${PACKAGE_ROOT}")
+    set(DESKTOP_EXEC "./${QTBER}")
     set(DESKTOP_FILE_DEST "${PACKAGE_ROOT}")
     set(ICON_DEST "${PACKAGE_ROOT}/icons")
-    set(CONFIG_FILE_DEST "${PACKAGE_ROOT}")
     set(MANIFEST_DEST "${PACKAGE_ROOT}")
-    set(DESKTOP_EXEC "./${QTBER}")
 
+    set(PLUGIN_BASE lib/${CMAKE_LIBRARY_ARCHITECTURE})
+    set(PLUGIN_DIR ${PLUGIN_BASE}/QtBer)
     add_definitions("-DCLICK_MODE=1")
 
 else(CLICK_MODE)
     set(INSTALL_ROOT "/")
     set(APP_DIR "${CMAKE_BINARY_DIR}")
     set(APP_ARMOR_DEST "${CMAKE_BINARY_DIR}")
-    set(ICON_DEST "${CMAKE_BINARY_DIR}/icons")
     set(CONFIG_FILE_DEST "${CMAKE_BINARY_DIR}")
     set(DESKTOP_FILE_DEST "${CMAKE_BINARY_DIR}")
     set(DESKTOP_EXEC "./${QTBER}")
+    set(ICON_DEST "${CMAKE_BINARY_DIR}/icons")
+
+    set(PLUGIN_BASE ${CMAKE_INSTALL_LIBDIR}/${QTBER})
+    set(PLUGIN_DIR ${PLUGIN_BASE}/QtBer)
 endif(CLICK_MODE)
+
+configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
 if(NOT DEFINED BZR_SOURCE)
     set(BZR_SOURCE "lp:qtber")
@@ -142,6 +149,28 @@ include_directories(
 file(GLOB_RECURSE QMLDIR_FILES qmldir)
 add_custom_target(QMLDIR_TARGET ALL SOURCES ${QMLDIR_FILES})
 
+######################################
+######### Executable Stuff
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+
+set(qtber_app_HDRS
+    qtberapplication.h
+)
+
+set(qtber_app_SRCS
+    qtberapplication.cpp
+    main.cpp
+)
+
+add_executable(${QTBER}
+    ${qtber_app_SRCS}
+)
+
+target_link_libraries(${QTBER}
+    ${Qt5Core_LIBRARIES}
+    ${Qt5Quick_LIBRARIES}
+    ${Qt5Gui_LIBRARIES}
+)
 ######################################
 ######### Testing stuff
 find_package(Gtest REQUIRED)

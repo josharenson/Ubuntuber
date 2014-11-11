@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtWebKit 3.0
+import QtBer 0.1
 import "../components"
 import "../assets/OAuth.js" as OAuth
 
@@ -10,6 +11,10 @@ StyledPage {
     width: parent.width
 
     visible: false
+
+    ConfigFile {
+
+    }
 
     // For debugging now, load a new view here
     Text {
