@@ -1,8 +1,8 @@
 #ifndef QTBER_PLUGIN_H_
 #define QTBER_PLUGIN_H_
 
-#include <QQmlExtensionPlugin>
-#include <QQmlEngine>
+#include <QtQml/QQmlEngine>
+#include <QtQml/QQmlExtensionPlugin>
 
 class QtBerPlugin : public QQmlExtensionPlugin
 {
