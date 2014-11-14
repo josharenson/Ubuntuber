@@ -5,8 +5,8 @@ include_directories(
 set(PLUGIN_DIR com/gmail/josharenson/qtber)
 
 set(qtber_backend_SRCS
-	configgile.cpp
-	configgile.h
+	configfile.cpp
+	configfile.h
 	plugin.h
 	plugin.cpp
 )
