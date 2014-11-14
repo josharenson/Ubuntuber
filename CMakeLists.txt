@@ -1,178 +1,98 @@
+project(com.gmail.josharenson.qtber C CXX)
 cmake_minimum_required(VERSION 2.8.9)
+find_program(INTLTOOL_MERGE intltool-merge)
+find_program(INTLTOOL_EXTRACT intltool-extract)
 
-######################################
-##### Cmake stuff
-# Default install location. Must be set here, before setting the project.
-if (NOT DEFINED CMAKE_INSTALL_PREFIX)
-    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "" FORCE)
-endif()
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-permissive -pedantic -Wall -Wextra -fPIC")
 
-project(QtBer C CXX)
+# Standard install paths
+include(GNUInstallDirs)
 
-if(${PROJECT_BINARY_DIR} STREQUAL ${PROJECT_SOURCE_DIR})
-   message(FATAL_ERROR "In-tree build attempt detected, aborting. Set your build dir outside your source dir, delete CMakeCache.txt from source root and try again.")
-endif()
+option(INSTALL_TESTS "Install the tests on make install" on)
+option(CLICK_MODE "Installs to a contained location" on)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-include(EnableCoverageReport)
-#####################################################################
-# Enable code coverage calculation with gcov/gcovr/lcov
-# Usage:
-#  * Switch build type to coverage (use ccmake or cmake-gui)
-#  * Invoke make, make test, make coverage (or ninja if you use that backend)
-#  * Find html report in subdir coveragereport
-#  * Find xml report feasible for jenkins in coverage.xml
-#####################################################################
-if(cmake_build_type_lower MATCHES coverage)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage" )
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage" )
-  set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} --coverage" )
-  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --coverage" )
-  ENABLE_COVERAGE_REPORT(TARGETS ${SHELL_APP} FILTER /usr/include ${CMAKE_SOURCE_DIR}/tests/* ${CMAKE_BINARY_DIR}/*)
-endif()
-
-# Make sure we have all the needed symbols
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,defs")
-set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -Wl,-z,defs")
-
-# Static C++ checks
-add_custom_target(cppcheck COMMAND cppcheck --enable=all -q --error-exitcode=2
-                                       ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/tests)
-
-add_subdirectory(cmake/)
-
-######################################
-######### Packaging Stuff
-option(CLICK_MODE "Installs to a contained location" off)
-set(QTBER qtber)
-
-set(APP_ARMOR_FILE "qtber-apparmor.json")
-set(CONFIG_FILE qtber.cfg)
-set(DESKTOP_FILE "qtber.desktop")
-set(ICON_FILE "qtber.svg")
-set(MANIFEST_FILE "manifest.json")
+set(APP_NAME qtber)
+set(DESKTOP_FILE "${PROJECT_NAME}.desktop")
+set(APP_HARDCODE qtber) # Launchpad id
+set(MAIN_QML qtber.qml)
+set(ICON_FILE qtber.svg)
+set(EXEC "${APP_NAME}")
+set(UBUNTU_MANIFEST_PATH "manifest.json.in" CACHE INTERNAL "Relative path to the manifest file")
 
 if(CLICK_MODE)
-    message("Configured to create a click package")
-    set(INSTALL_ROOT "package")
-    set(PACKAGE_ROOT "${CMAKE_BINARY_DIR}/${INSTALL_ROOT}")
-    file(MAKE_DIRECTORY ${PACKAGE_ROOT})
+    if(NOT DEFINED BZR_SOURCE)
+        set(BZR_SOURCE "lp:${APP_HARDCODE}")
+        message("-- Setting BZR_SOURCE to ${BZR_SOURCE}")
+    endif(NOT DEFINED BZR_SOURCE)
+    # Find out the architecture for package building
+    # to determine the plugin's installation path
+    execute_process(
+        COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
+        OUTPUT_VARIABLE ARCH_TRIPLET
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(CMAKE_INSTALL_PREFIX /)
+    set(CMAKE_INSTALL_BINDIR /)
+    set(DATA_DIR /)
+    set(DESKTOP_DIR ${DATA_DIR})
+    set(ICON ${ICON_FILE})
+    set(QT_IMPORTS_DIR "/lib/${ARCH_TRIPLET}")
+    set(BIN_DIR /lib/${ARCH_TRIPLET}/bin)
+    if(NOT BZR_REVNO)
+        set(BZR_REVNO "latest")
+    endif(NOT BZR_REVNO)
 
-    set(APP_DIR "${PACKAGE_ROOT}")
-    set(APP_ARMOR_DEST "${PACKAGE_ROOT}")
-    set(CONFIG_FILE_DEST "${PACKAGE_ROOT}")
-    set(DESKTOP_EXEC "./${QTBER}")
-    set(DESKTOP_FILE_DEST "${PACKAGE_ROOT}")
-    set(ICON_DEST "${PACKAGE_ROOT}/icons")
-    set(MANIFEST_DEST "${PACKAGE_ROOT}")
+    execute_process(
+      COMMAND dpkg-architecture -qDEB_HOST_ARCH
+      OUTPUT_VARIABLE CLICK_ARCH
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    configure_file(manifest.json.in ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json terminal.apparmor DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-    set(PLUGIN_BASE lib/${CMAKE_LIBRARY_ARCHITECTURE})
-    set(PLUGIN_DIR ${PLUGIN_BASE}/QtBer)
-    add_definitions("-DCLICK_MODE=1")
+    # make the click files visible in qtcreator
+    file(GLOB CLICK_FILES
+         RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+         *.json *.json.in *.apparmor)
 
+    add_custom_target(com_ubuntu_terminal_CLICKFiles ALL SOURCES ${CLICK_FILES})
 else(CLICK_MODE)
-    set(INSTALL_ROOT "/")
-    set(APP_DIR "${CMAKE_BINARY_DIR}")
-    set(APP_ARMOR_DEST "${CMAKE_BINARY_DIR}")
-    set(CONFIG_FILE_DEST "${CMAKE_BINARY_DIR}")
-    set(DESKTOP_FILE_DEST "${CMAKE_BINARY_DIR}")
-    set(DESKTOP_EXEC "./${QTBER}")
-    set(ICON_DEST "${CMAKE_BINARY_DIR}/icons")
-
-    set(PLUGIN_BASE ${CMAKE_INSTALL_LIBDIR}/${QTBER})
-    set(PLUGIN_DIR ${PLUGIN_BASE}/QtBer)
+    execute_process(
+        COMMAND qmake -query QT_INSTALL_QML
+        OUTPUT_VARIABLE QT_IMPORTS_DIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(DATA_DIR ${CMAKE_INSTALL_DATADIR}/${APP_NAME})
+    set(ICON ${CMAKE_INSTALL_PREFIX}/${DATA_DIR}/${ICON_FILE})
+    set(DESKTOP_DIR ${CMAKE_INSTALL_DATADIR}/applications)
 endif(CLICK_MODE)
 
-configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+#file(GLOB_RECURSE I18N_SRC_FILES
+#     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/po
+#     *.qml *.js *.cpp *.h)
+ #list(APPEND I18N_SRC_FILES ${DESKTOP_FILE}.in.in.h)
+ #list(SORT I18N_SRC_FILES)
 
-if(NOT DEFINED BZR_SOURCE)
-    set(BZR_SOURCE "lp:qtber")
-endif(NOT DEFINED BZR_SOURCE)
+file(GLOB SRC_FILES
+     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+     *.qml *.js *.png *.js)
+install(FILES ${SRC_FILES}
+    DESTINATION ${DATA_DIR})
 
-if(NOT BZR_REVNO)
-    set(BZR_REVNO "latest")
-endif(NOT  BZR_REVNO)
+configure_file(${DESKTOP_FILE}.in ${DESKTOP_FILE})
 
-# Install the config file
-install(FILES ${CONFIG_FILE} DESTINATION ${CONFIG_FILE_DEST})
-add_definitions("-DCONFIG_FILE_PATH=\"${CONFIG_FILE_DEST}/${CONFIG_FILE}\"")
+#add_custom_target(${DESKTOP_FILE} ALL
+#    COMMENT "Merging translations into ${DESKTOP_FILE}..."
+#    COMMAND LC_ALL=C ${INTLTOOL_MERGE} -d -u ${CMAKE_SOURCE_DIR}/po ${DESKTOP_FILE}.in ${DESKTOP_FILE}
+#)
 
-# Configure and install the apparmor
-configure_file("${APP_ARMOR_FILE}" "${APP_ARMOR_DEST}")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
+    DESTINATION ${DESKTOP_DIR})
 
-# Install the stupid icon
-set(RELATIVE_ICON_PATH "icons/${ICON_FILE}")
-install(FILES ${ICON_FILE} DESTINATION ${ICON_DEST})
+# Tests
+#enable_testing()
 
-# Configure and install the dekstop file
-configure_file("${DESKTOP_FILE}" "${DESKTOP_FILE_DEST}")
-
-# Configure and install the manifest
-configure_file("${MANIFEST_FILE}" "${MANIFEST_DEST}")
-
-######################################
-######### QML Stuff
-set(CMAKE_AUTOMOC ON)
-
-# enable QML debugging
-string(TOLOWER "${CMAKE_BUILD_TYPE}" cmake_build_type_lower) # Build types should always be lowercase but sometimes they are not.
-if(cmake_build_type_lower MATCHES "debug")
-    add_definitions(-DQT_QML_DEBUG)
-endif()
-
-find_package(Qt5Core 5.2 REQUIRED)
-find_package(Qt5Qml 5.2 REQUIRED)
-find_package(Qt5Quick 5.2 REQUIRED)
-find_package(Qt5Gui 5.2 REQUIRED)
-
-add_subdirectory(qml)
-
-######################################
-######### Backend stuff
-
-find_package(Oauth REQUIRED)
-find_package(LibConfig REQUIRED)
-
-add_subdirectory(QtBer/)
-
-
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Quick_INCLUDE_DIRS}
-    ${Qt5Multimedia_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
-)
-
-file(GLOB_RECURSE QMLDIR_FILES qmldir)
-add_custom_target(QMLDIR_TARGET ALL SOURCES ${QMLDIR_FILES})
-
-######################################
-######### Executable Stuff
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-
-set(qtber_app_HDRS
-    qtberapplication.h
-)
-
-set(qtber_app_SRCS
-    qtberapplication.cpp
-    main.cpp
-)
-
-add_executable(${QTBER}
-    ${qtber_app_SRCS}
-)
-
-target_link_libraries(${QTBER}
-    ${Qt5Core_LIBRARIES}
-    ${Qt5Quick_LIBRARIES}
-    ${Qt5Gui_LIBRARIES}
-)
-######################################
-######### Testing stuff
-find_package(Gtest REQUIRED)
-include_directories(${GMOCK_INCLUDE_DIR} ${GTEST_INCLUDE_DIR})
-add_subdirectory(tests/)
+#add_subdirectory(po)
+#add_subdirectory(tests)
+add_subdirectory(src)
