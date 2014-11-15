@@ -13,6 +13,7 @@ option(INSTALL_TESTS "Install the tests on make install" on)
 option(CLICK_MODE "Installs to a contained location" on)
 
 set(APP_NAME qtber)
+set(CONFIG_FILE qtber.config)
 set(DESKTOP_FILE "${PROJECT_NAME}.desktop")
 set(APP_HARDCODE qtber) # Launchpad id
 set(MAIN_QML qtber.qml)
@@ -82,17 +83,11 @@ install(FILES ${SRC_FILES}
 
 configure_file(${DESKTOP_FILE}.in ${DESKTOP_FILE})
 
-#add_custom_target(${DESKTOP_FILE} ALL
-#    COMMENT "Merging translations into ${DESKTOP_FILE}..."
-#    COMMAND LC_ALL=C ${INTLTOOL_MERGE} -d -u ${CMAKE_SOURCE_DIR}/po ${DESKTOP_FILE}.in ${DESKTOP_FILE}
-#)
-
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
     DESTINATION ${DESKTOP_DIR})
 
-# Tests
-#enable_testing()
+add_definitions("-DCONFIG_FILE_PATH=\"${CMAKE_INSTALL_DATADIR}/${CONFIG_FILE}\"")
+install(FILES ${CONFIG_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR})
 
-#add_subdirectory(po)
 #add_subdirectory(tests)
 add_subdirectory(src)

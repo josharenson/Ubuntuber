@@ -1,0 +1,7 @@
+Source: qtber
+Maintainer: Josh Arenson <josharenson@gmail.com>
+Standards-Version: 3.9.2
+
+Package: qtber
+Architecture: any
+
