@@ -1,7 +1,19 @@
 Source: qtber
+Priority: extra
 Maintainer: Josh Arenson <josharenson@gmail.com>
 Standards-Version: 3.9.2
+Build-Depends:  cmake,
+                debhelper (>= 9),
+                intltool,
+                libconfig++-dev,
+                qtbase5-dev,
+                qtdeclarative5-dev,
+                qt5-default
 
 Package: qtber
 Architecture: any
+Depends:    ${misc-Depends},
+            ${shlibs:Depends},
+            qtdeclarative5-ubuntu-ui-toolkit-plugin
+Description: An Uber clone for Ubuntu Touch
 
