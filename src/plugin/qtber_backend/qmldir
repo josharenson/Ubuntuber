@@ -1,2 +1,2 @@
-module QtBer
-plugin qtber_backend
+module com.gmail.josharenson.qtber
+plugin QtBerBackend

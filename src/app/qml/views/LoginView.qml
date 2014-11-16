@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtWebKit 3.0
-import QtBer 0.1
+import com.gmail.josharenson.qtber 0.1
 import "../components"
 import "../assets/OAuth.js" as OAuth
 

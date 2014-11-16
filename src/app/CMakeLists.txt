@@ -11,7 +11,7 @@ add_executable(qtber ${qtber_SRCS})
 qt5_use_modules(qtber Gui Qml Quick)
 
 if(NOT "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
-    add_custom_target(qtber-qmlfiles ALL
+    add_custom_target(qtber_ backendfiles ALL
         COMMAND cp -r ${CMAKE_CURRENT_SOURCE_DIR}/qml ${CMAKE_CURRENT_BINARY_DIR}
         DEPENDS ${QMLFILES}
 )

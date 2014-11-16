@@ -20,7 +20,7 @@ find_package(Threads)
 target_link_libraries(
     qtber_unit_tests
 
-    qtber-qml
+    #    qtber-qml
     ${GTEST_BOTH_LIBRARIES}
     ${GMOCK_LIBRARY}
     ${GMOCK_MAIN_LIBRARY}

@@ -1,3 +1,5 @@
+find_package(LibConfig)
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -15,7 +17,7 @@ add_library(QtBerBackend MODULE
     ${qtber_backend_SRCS}
 )
 
-target_link_libraries(QtBerBackend)
+target_link_libraries(QtBerBackend libconfig++)
 
 qt5_use_modules(QtBerBackend Gui Qml Quick Widgets)
 
