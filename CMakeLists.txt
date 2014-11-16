@@ -50,14 +50,14 @@ if(CLICK_MODE)
       OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     configure_file(manifest.json.in ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json terminal.apparmor DESTINATION ${CMAKE_INSTALL_PREFIX})
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json qtber.apparmor DESTINATION ${CMAKE_INSTALL_PREFIX})
 
     # make the click files visible in qtcreator
     file(GLOB CLICK_FILES
          RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
          *.json *.json.in *.apparmor)
 
-    add_custom_target(com_ubuntu_terminal_CLICKFiles ALL SOURCES ${CLICK_FILES})
+    add_custom_target(com_gmail_josharenson_qtber_CLICKFiles ALL SOURCES ${CLICK_FILES})
 else(CLICK_MODE)
     execute_process(
         COMMAND qmake -query QT_INSTALL_QML
