@@ -3,6 +3,8 @@
 
 #include "configfile.h"
 
+#include <QDebug>
+
 ConfigFile::ConfigFile(QObject *parent) : QObject(parent)
 {
     libconfig::Config cfg;
@@ -20,8 +22,11 @@ ConfigFile::ConfigFile(QObject *parent) : QObject(parent)
 
     try
     {
-        std::string v = cfg.lookup("uber_api_authorization_url");
-        m_uber_api_authorization_url = QString::fromStdString(v);
+        std::string uaau = cfg.lookup("uber_api_authorization_url");
+        m_uber_api_authorization_url = QString::fromStdString(uaau);
+
+        std::string uaoci = cfg.lookup("uber_api_oauth_client_id");
+        m_uber_api_oauth_client_id = QString::fromStdString(uaoci);
     }
     catch (const libconfig::SettingNotFoundException &nfex)
     {
@@ -30,6 +35,10 @@ ConfigFile::ConfigFile(QObject *parent) : QObject(parent)
 
 QString ConfigFile::uberApiAuthorizationUrl()
 {
-    return "Hello From C++";
-    //return m_uber_api_authorization_url;
+    return m_uber_api_authorization_url;
+}
+
+QString ConfigFile::uberApiOauthClientId()
+{
+    return m_uber_api_oauth_client_id;
 }

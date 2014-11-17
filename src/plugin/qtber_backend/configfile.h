@@ -6,28 +6,19 @@
 class ConfigFile : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY( QString uber_api_authorization_url
-            READ uberApiAuthorizationUrl
-            WRITE setUberApiAuthorizationUrl
-            NOTIFY uberApiAuthorizationUrlChanged )
-
+    Q_PROPERTY (QString uberApiAuthorizationUrl READ uberApiAuthorizationUrl)
+    Q_PROPERTY (QString uberApiOauthClientId READ uberApiOauthClientId)
 
     public:
         explicit ConfigFile(QObject *parent = 0);
 
-    Q_SIGNALS:
-            void uberApiAuthorizationUrlChanged();
-
     protected:
         QString uberApiAuthorizationUrl();
-        void setUberApiAuthorizationUrl(QString url)
-        {
-            m_uber_api_authorization_url = url; Q_EMIT uberApiAuthorizationUrlChanged();
-        }
-
+        QString uberApiOauthClientId();
 
     private:
         QString m_uber_api_authorization_url;
+        QString m_uber_api_oauth_client_id;
 };
 
 #endif /* QTBER_CONFIG_FILE_H_  */

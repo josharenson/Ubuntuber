@@ -16,17 +16,11 @@ StyledPage {
         id: config
     }
 
-    // For debugging now, load a new view here
-    Text {
-        id: next_state
-
-        visible: false
-        anchors.centerIn: parent
-        text: "Log in successful!"
-        /*onVisibleChanged: {
-            if (visible)
-                parent.changeViews("MapView.qml")
-        }*/
+    function authorization_url() {
+        return  config.uberApiAuthorizationUrl +
+        "?client_id=" +
+        config.uberApiOauthClientId +
+        "&response_type=code";
     }
 
     Item {
@@ -38,7 +32,7 @@ StyledPage {
         anchors.fill: parent
         Component.onCompleted: {
             // Set this to true during development to always force an authentication
-            OAuth.checkToken(false)
+            OAuth.checkToken(true)
         }
 
         LoadingAnimation {
@@ -75,7 +69,6 @@ StyledPage {
             id: the_timer
             interval: 1000; running: false; repeat: false
             onTriggered: {
-                console.log(config.uber_api_authorization_url + "JOSH")
                 login_view.changeViews("MapView.qml")
             }
         }
@@ -91,7 +84,7 @@ StyledPage {
                 PropertyChanges {
                     target: login_webview
                     visible: true
-                    url: "https://login.uber.com/oauth/authorize?client_id=1xRXYLdYXuNSQBSfmHzbDfnNUmZtuxZn&response_type=code"
+                    url: authorization_url()
                 }
             },
             State {
