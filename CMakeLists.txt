@@ -88,8 +88,10 @@ configure_file(${DESKTOP_FILE}.in ${DESKTOP_FILE})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
     DESTINATION ${DESKTOP_DIR})
 
-add_definitions("-DCONFIG_FILE_PATH=\"${CMAKE_INSTALL_DATADIR}/${CONFIG_FILE}\"")
-install(FILES ${CONFIG_FILE} DESTINATION ${CMAKE_INSTALL_DATADIR})
+add_definitions("-DCONFIG_FILE_PATH=\"${CMAKE_INSTALL_PREFIX}/${DESKTOP_DIR}/${CONFIG_FILE}\"")
+install(FILES ${CONFIG_FILE} DESTINATION ${DESKTOP_DIR})
+message("JOSHUA ${DATA_DIR}")
 
 #add_subdirectory(tests)
 add_subdirectory(src)
+add_subdirectory(tests)

@@ -13,7 +13,7 @@ StyledPage {
     visible: false
 
     ConfigFile {
-
+        id: config
     }
 
     // For debugging now, load a new view here
@@ -62,6 +62,7 @@ StyledPage {
             }
 
             onLoadingChanged: {
+                console.log("JOSH: " + config.uber_api_authorization_url)
                 if (loadRequest.status == WebView.LoadStartedStatus) {
                     loading_animation.visible = true
                 } else {

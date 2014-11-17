@@ -1,5 +1,9 @@
+find_package(Gtest)
+find_package(LibConfig)
+
 include_directories(
     ../../backend/include
+    ${LIBCONFIGPP_INCLUDE_DIR}
 )
 
 set(

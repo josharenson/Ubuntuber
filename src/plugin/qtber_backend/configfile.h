@@ -10,7 +10,7 @@ class ConfigFile : public QObject
     public:
         explicit ConfigFile(QObject *parent = 0);
 
-        QString uber_api_authorization_url();
+        Q_INVOKABLE QString uber_api_authorization_url();
 
     private:
         QString m_uber_api_authorization_url;
