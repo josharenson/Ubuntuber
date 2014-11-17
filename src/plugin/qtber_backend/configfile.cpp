@@ -28,7 +28,7 @@ ConfigFile::ConfigFile(QObject *parent) : QObject(parent)
     }
 }
 
-QString ConfigFile::uber_api_authorization_url()
+QString ConfigFile::uberApiAuthorizationUrl()
 {
     return "Hello From C++";
     //return m_uber_api_authorization_url;

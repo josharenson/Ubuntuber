@@ -62,7 +62,6 @@ StyledPage {
             }
 
             onLoadingChanged: {
-                console.log("JOSH: " + config.uber_api_authorization_url)
                 if (loadRequest.status == WebView.LoadStartedStatus) {
                     loading_animation.visible = true
                 } else {
@@ -76,7 +75,7 @@ StyledPage {
             id: the_timer
             interval: 1000; running: false; repeat: false
             onTriggered: {
-                console.log("TIMER TRIGGERED")
+                console.log(config.uber_api_authorization_url + "JOSH")
                 login_view.changeViews("MapView.qml")
             }
         }
