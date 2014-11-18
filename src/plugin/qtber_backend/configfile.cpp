@@ -25,6 +25,9 @@ ConfigFile::ConfigFile(QObject *parent) : QObject(parent)
         std::string uaau = cfg.lookup("uber_api_authorization_url");
         m_uber_api_authorization_url = QString::fromStdString(uaau);
 
+        std::string uabu = cfg.lookup("uber_api_base_url");
+        //m_uber
+
         std::string uaoci = cfg.lookup("uber_api_oauth_client_id");
         m_uber_api_oauth_client_id = QString::fromStdString(uaoci);
     }

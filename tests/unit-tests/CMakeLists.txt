@@ -9,6 +9,7 @@ include_directories(
 set(
     UNIT_TEST_SOURCES
 
+    test_asset_paths.cpp
     test_config_file.cpp
 )
 

@@ -7,6 +7,9 @@ class ConfigFile : public QObject
 {
     Q_OBJECT
     Q_PROPERTY (QString uberApiAuthorizationUrl READ uberApiAuthorizationUrl)
+    Q_PROPERTY (QString uberApiBaseUrl READ uberApiBaseUrl)
+    Q_PROPERTY (QString uberApiProductsUrl READ uberApiProductsUrl)
+
     Q_PROPERTY (QString uberApiOauthClientId READ uberApiOauthClientId)
 
     public:
@@ -14,10 +17,16 @@ class ConfigFile : public QObject
 
     protected:
         QString uberApiAuthorizationUrl();
+        QString uberApiBaseUrl();
+        QString uberApiProductsUrl();
+
         QString uberApiOauthClientId();
 
     private:
         QString m_uber_api_authorization_url;
+        QString m_uber_api_base_url;
+        QString m_uber_api_products_url;
+
         QString m_uber_api_oauth_client_id;
 };
 
