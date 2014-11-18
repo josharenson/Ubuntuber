@@ -91,8 +91,9 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
 add_definitions("-DCONFIG_FILE_PATH=\"${CMAKE_INSTALL_PREFIX}/${DESKTOP_DIR}/${CONFIG_FILE}\"")
 install(FILES ${CONFIG_FILE} DESTINATION ${DESKTOP_DIR})
 
+# Install Icon
 add_definitions("-DICON_FILE_PATH=\"${ICON}\"")
-install(FILES ${ICON_FILE} DESTINATION ${ICON})
+#install(FILES ${ICON_FILE} DESTINATION ${ICON})
 
 #add_subdirectory(tests)
 add_subdirectory(src)
