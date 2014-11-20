@@ -1,5 +1,6 @@
 import QtQuick 2.0
-import QtWebKit 3.0
+import Ubuntu.Web 0.2
+import Ubuntu.Components 1.1
 import "../components"
 
 StyledPage{
@@ -7,28 +8,18 @@ StyledPage{
 
     anchors.fill: parent
 
-    LoadingAnimation {
-        id: loading_animation
-
-        height: units.gu(4)
-        width: units.gu(4)
-
-        visible: false
-        z: 10
-    }
-
     WebView {
-        id: registration_window
+        id: web_view
 
         anchors.fill: parent
         url: "https://get.uber.com/sign-up/"
 
-        onLoadingChanged: {
-            if (loadRequest.status == WebView.LoadStartedStatus) {
-                loading_animation.visible = true
-            } else {
-                loading_animation.visible = false
-            }
+        LoadingAnimation {
+            id: loading_animation
+
+            height: units.gu(1); width: parent.width
+            visible: web_view.loading
+            anchors.top: parent.top 
         }
     }
 }
