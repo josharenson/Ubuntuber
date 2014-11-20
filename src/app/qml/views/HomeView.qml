@@ -49,7 +49,7 @@ StyledPage {
         text: "Login"
 
         onClicked: {
-            parent.changeViews("NewLoginView.qml")
+            parent.changeViews("LoginView.qml")
         }
     }
 }

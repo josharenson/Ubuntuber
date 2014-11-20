@@ -56,11 +56,14 @@ function authorizationUrl() {
 function bearerToken() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "SELECT * FROM OAuthToken";
+    var token = null;
     db.transaction(function(tx) {
         tx.executeSql('CREATE TABLE IF NOT EXISTS OAuthToken(bearer_token TEXT)');
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
-            console.log(rs.rows.item(0).bearer_token + "<--- IS TOKEN")
+            token = rs.rows.item(0).bearer_token;
         }
+
+        return token;
     });
 }

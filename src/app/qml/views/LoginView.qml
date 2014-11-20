@@ -1,100 +1,33 @@
 import QtQuick 2.0
-import QtWebKit 3.0
-import com.gmail.josharenson.qtber 0.1
+import Ubuntu.Web 0.2
+import Ubuntu.Components 1.1
 import "../components"
-import "../assets/OAuth.js" as OAuth
+
+import "../assets/api.js" as API
 
 StyledPage {
     id: login_view
 
-    height: parent.height
-    width: parent.width
+    anchors.fill: parent
 
-    visible: false
-
-    ConfigFile {
-        id: config
-    }
-
-    function authorization_url() {
-        return  config.uberApiAuthorizationUrl +
-        "?client_id=" +
-        config.uberApiOauthClientId +
-        "&response_type=code";
-    }
-
-    Item {
-        id: stack_oauth
-
-        property string next_state: "AuthDone"
-        property string token: ""
+    WebView {
+        id: web_view
 
         anchors.fill: parent
-        Component.onCompleted: {
-            // Set this to true during development to always force an authentication
-            OAuth.checkToken(true)
+
+        url: API.authorizationUrl()
+        onUrlChanged: {
+            if (API.saveBearerToken(url)) {
+                login_view.changeViews("MapView.qml");
+            }
         }
 
         LoadingAnimation {
             id: loading_animation
 
-            height: units.gu(4)
-            width: units.gu(4)
-
-            visible: false
-            z: 10
+            height: units.gu(1); width: parent.width;
+            visible: web_view.loading
+            anchors.top: parent.top
         }
-
-        WebView {
-            id: login_webview
-
-            visible: false
-            anchors.fill: parent
-
-            onUrlChanged: {
-                OAuth.urlChanged(url)
-            }
-
-            onLoadingChanged: {
-                if (loadRequest.status == WebView.LoadStartedStatus) {
-                    loading_animation.visible = true
-                } else {
-                    loading_animation.visible = false
-                }
-            }
-        }
-
-        // FIXME This jank shit works around a bug 1390593
-        Timer {
-            id: the_timer
-            interval: 1000; running: false; repeat: false
-            onTriggered: {
-                login_view.changeViews("MapView.qml")
-            }
-        }
-        onStateChanged: {
-            if (state == "AuthDone") {
-                the_timer.running = true
-            }
-        }
-
-        states: [
-            State {
-                name: "Login"
-                PropertyChanges {
-                    target: login_webview
-                    visible: true
-                    url: authorization_url()
-                }
-            },
-            State {
-                name: "AuthDone"
-                PropertyChanges {
-                    target: login_webview
-                    visible: false
-                    opacity: 0
-                }
-            }
-        ]
     }
 }
