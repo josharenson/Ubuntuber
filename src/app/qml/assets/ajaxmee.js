@@ -54,10 +54,14 @@ var ajaxmee = function(method, url, params, successCallback, errorCallback) {
 
         doc.open(method, url);
         if (params.length > 0) {
+            doc.setRequestHeader("Authorization","Bearer 7xvgVDclLZvugwKS7LVkxx9MuBA57E")
             doc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             doc.setRequestHeader("Content-Length", String(params.length));
             doc.send(params);
         } else {
+
+            doc.setRequestHeader("Authorization","Bearer 7xvgVDclLZvugwKS7LVkxx9MuBA57E")
+                console.log("setting headers")
             doc.send();
         }
     }

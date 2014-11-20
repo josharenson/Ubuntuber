@@ -5,11 +5,11 @@ function urlChanged(url) {
     var mUrl = url.toString();
     var token = "";
     if (mUrl.indexOf("https://localhost") > -1) {
-        var query = mUrl.substring(mUrl.indexOf('?') + 1);
+        var query = mUrl.substring(mUrl.indexOf('#') + 1);
         var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
-            if (pair[0] == "code") {
+            if (pair[0] == "access_token") {
                 authorized = true;
                 token = pair[1];
                 console.log("Found token: " + token)
