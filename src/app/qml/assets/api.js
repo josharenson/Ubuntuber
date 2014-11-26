@@ -56,6 +56,10 @@ function saveBearerToken(url) {
     return true;
 }
 
+function bearerTokenIsValid() {
+    return (Date.now() < bearerTokenExpiresIn());
+}
+
 // Accessors
 function authorizationUrl() {
     return Config.uberApi['authorizationUrl'] +
@@ -77,7 +81,7 @@ function bearerToken() {
     return token;
 }
 
-function expiresIn() {
+function bearerTokenExpiresIn() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "SELECT * FROM OAuthInfo";
     var expires = null;
