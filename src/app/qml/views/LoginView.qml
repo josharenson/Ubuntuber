@@ -18,7 +18,7 @@ StyledPage {
         url: API.authorizationUrl()
         onUrlChanged: {
             if (API.saveBearerToken(url)) {
-                login_view.changeViews("../components/ProductTypes.qml");
+                login_view.changeViews("MapView.qml");
             }
         }
 
