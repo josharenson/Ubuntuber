@@ -9,17 +9,21 @@ Rectangle {
 
     property var coords;
 
-    height: units.gu(4); width: parent.width;
-
-    Text {
-        anchors.fill: parent
-        anchors.centerIn: parent
-        text: "PLACEHOLDER FOR PRODUCT TYPES: \n" + coords.latitude + " " + coords.longitude;
-    }
+    height: units.gu(40); width: parent.width;
 
     ListModel {
         id: productTypesModel
     }
+
+    ListView {
+        id: productTypesView
+        anchors.fill: parent
+        model: productTypesModel
+        delegate: Text {
+            text: display_name
+        }
+    }
+
 
     Component.onCompleted: {
         var location = {"latitude":coords.latitude, "longitude":coords.longitude};
@@ -29,7 +33,11 @@ Rectangle {
             // FIXME a string is returned for some reason so we eval to make it
             // an Object
             var data = eval(data);
-            console.log(data["products"]);
+            data["products"].forEach(
+                function(product) {
+                    productTypesModel.append(product);
+                }
+            );
         }
     }
 }
