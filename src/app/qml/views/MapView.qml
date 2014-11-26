@@ -32,6 +32,5 @@ StyledPage {
 
     ProductTypes {
         coords: currentLocation
-        Component.onCompleted: console.log("LOCATION IS: " + positionSource.valid)
     }
 }
