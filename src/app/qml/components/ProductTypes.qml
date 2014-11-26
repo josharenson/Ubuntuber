@@ -15,10 +15,10 @@ Rectangle {
         id: productTypesModel
     }
 
-    Component {
+    /*Component {
         id: productTypesDelegate
 
-    }
+    }*/
 
     ListView {
         id: productTypesView

@@ -48,7 +48,7 @@ function saveBearerToken(url) {
     db.transaction(function(tx) {
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS OAuthInfo' +
-            '(bearer_token TEXT, expiration_time DATE)'
+            '(bearer_token TEXT, expires_in DATE)'
         );
         tx.executeSql(dataStr, data);
     });
@@ -69,11 +69,23 @@ function bearerToken() {
     var dataStr = "SELECT * FROM OAuthInfo";
     var token = null;
     db.transaction(function(tx) {
-        //tx.executeSql('CREATE TABLE IF NOT EXISTS OAuthToken(bearer_token TEXT)');
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
             token = rs.rows.item(rs.rows.length - 1).bearer_token;
         }
     });
     return token;
+}
+
+function expiresIn() {
+    var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
+    var dataStr = "SELECT * FROM OAuthInfo";
+    var expires = null;
+    db.transaction(function(tx) {
+        var rs = tx.executeSql(dataStr);
+        if (rs.rows.item(0)) {
+            expires = rs.rows.item(rs.rows.length - 1).expires_in;
+        }
+    });
+    return expires;
 }
