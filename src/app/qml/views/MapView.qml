@@ -15,4 +15,7 @@ StyledPage {
         url: "../assets/google_maps.html"
     }
 
+    ProductTypes {
+
+    }
 }

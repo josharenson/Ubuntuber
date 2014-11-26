@@ -21,6 +21,7 @@ MainView {
         id: page_stack
 
         Connections {
+            ignoreUnknownSignals: true
             target: page_stack.currentPage
             onChangeViews: {
                 console.log("Loding view: views/" + viewName)
