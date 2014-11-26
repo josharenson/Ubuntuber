@@ -19,6 +19,17 @@ function get_product_types(success_callback, data) {
 /******** OAuth Stuff ********/
 
 var dbConArgs = ["QtBer", "1.0", "QtBer Local Data", 1];
+
+// Useful for debugging or logging out
+function dropDbTable() {
+    var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
+    var dataStr = "DROP TABLE OAuthInfo";
+    db.transaction(function(tx) {
+        tx.executeSql(dataStr);
+    });
+
+}
+
 function urlHasBearerToken(url) {
     return url.toString().indexOf("access_token") > -1 ? true : false;
 }
