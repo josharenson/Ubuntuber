@@ -15,10 +15,9 @@ MainView {
      * straight to the map if they are
      */
     Component.onCompleted: {
-        API.bearerTokenIsValid();
-        //var initialView = API.bearerTokenIsValid() ?
-        //    "views/MapView.qml" : "views/HomeView.qml";
-        //page_stack.push(Qt.resolvedUrl(initialView))
+        var initialView = API.bearerTokenIsValid() ?
+        "views/MapView.qml" : "views/HomeView.qml";
+        page_stack.push(Qt.resolvedUrl(initialView))
     }
 
     PageStack {

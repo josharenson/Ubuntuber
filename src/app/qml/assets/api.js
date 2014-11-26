@@ -20,6 +20,10 @@ function get_product_types(success_callback, data) {
 
 var dbConArgs = ["QtBer", "1.0", "QtBer Local Data", 1];
 
+function bearerTokenIsValid() {
+    return (Date.now() < bearerTokenExpiresIn());
+}
+
 // Useful for debugging or logging out
 function dropDbTable() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
@@ -65,10 +69,6 @@ function saveBearerToken(url) {
     });
 
     return true;
-}
-
-function bearerTokenIsValid() {
-    return (Date.now() < bearerTokenExpiresIn());
 }
 
 // Accessors
