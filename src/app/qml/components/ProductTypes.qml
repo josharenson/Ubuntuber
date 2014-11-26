@@ -10,7 +10,7 @@ Rectangle {
     Component.onCompleted: {
         console.log(API.get_product_types(helloWorld, location));
         function helloWorld(data) {
-            console.log("HI");
+            console.log("HI: " + data);
         }
     }
 }

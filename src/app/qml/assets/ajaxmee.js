@@ -52,7 +52,8 @@ var ajaxmee = function(method, url, params, successCallback, errorCallback) {
 
         doc.open(method, url);
         for (var key in headers) {
-            doc.setRequestHeader(key, headers[key]);
+            doc.setRequestHeader(String(key), String(headers[key]));
+            console.log("SETTING: " + key + "," + headers[key]);
         }
 
         if (params.length > 0) {

@@ -4,9 +4,12 @@
 
 function get_product_types(success_callback, data) {
     var url = Config.uberApi.baseUrl + Config.uberApi.productsUrl;
-    console.log(url);
-    console.log("BT: " + bearerToken());
-    Ajaxmee.ajaxmee('GET', url, data, bearerToken(),
+    var payload =   [
+                        {"Authorization": "Bearer " + String(bearerToken())},
+                        data
+                    ]
+
+    Ajaxmee.ajaxmee('GET', url, payload,
             success_callback,
             function(status, statusText) {
                 console.log('error', status, statusText)
@@ -33,7 +36,6 @@ function saveBearerToken(url) {
     }
 
     var bearerToken = match[1];
-    console.log("FOUND BEARER TOKEN: " + bearerToken)
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "INSERT INTO OAuthToken VALUES(?)";
     var data = [bearerToken];
@@ -61,7 +63,7 @@ function bearerToken() {
         tx.executeSql('CREATE TABLE IF NOT EXISTS OAuthToken(bearer_token TEXT)');
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
-            token = rs.rows.item(0).bearer_token;
+            token = rs.rows.item(rs.rows.length - 1).bearer_token;
         }
     });
     return token;
