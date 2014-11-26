@@ -48,7 +48,7 @@ function saveBearerToken(url) {
     db.transaction(function(tx) {
         tx.executeSql(
             'CREATE TABLE IF NOT EXISTS OAuthInfo' +
-            '(bearer_token TEXT, expires_in DATE)'
+            '(bearer_token TEXT, expires_in INTEGER)'
         );
         tx.executeSql(dataStr, data);
     });

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.0
+import "assets/api.js" as API
 import "components/"
 
 MainView {
@@ -14,7 +15,10 @@ MainView {
      * straight to the map if they are
      */
     Component.onCompleted: {
-        page_stack.push(Qt.resolvedUrl("views/HomeView.qml"))
+        API.bearerTokenIsValid();
+        //var initialView = API.bearerTokenIsValid() ?
+        //    "views/MapView.qml" : "views/HomeView.qml";
+        //page_stack.push(Qt.resolvedUrl(initialView))
     }
 
     PageStack {
