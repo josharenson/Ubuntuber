@@ -28,19 +28,28 @@ function saveBearerToken(url) {
         return false;
     }
 
+    // Do seperate regexes as we can't guarentee the string ordering
     var re_bearerToken = /access_token\=([^&]+)/;
-    var match = re_bearerToken.exec(url);
+    var re_expiresIn = /expires_in\=([^&]+)/;
 
-    if (!match[1]) { // check length
+    var match_bearerToken = re_bearerToken.exec(url);
+    var match_expiresIn = re_expiresIn.exec(url);
+    if (!match_bearerToken[1] && !match_expiresIn[1]) {
         return false;
     }
 
-    var bearerToken = match[1];
+    var bearerToken = match_bearerToken[1];
+    var expiresIn = match_expiresIn[1];
+    expiresIn += Date.now();
+
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
-    var dataStr = "INSERT INTO OAuthToken VALUES(?)";
-    var data = [bearerToken];
+    var dataStr = "INSERT INTO OAuthInfo VALUES(?, ?)";
+    var data = [bearerToken, expiresIn];
     db.transaction(function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS OAuthToken(bearer_token TEXT)');
+        tx.executeSql(
+            'CREATE TABLE IF NOT EXISTS OAuthInfo' +
+            '(bearer_token TEXT, expiration_time DATE)'
+        );
         tx.executeSql(dataStr, data);
     });
 
@@ -57,10 +66,10 @@ function authorizationUrl() {
 
 function bearerToken() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
-    var dataStr = "SELECT * FROM OAuthToken";
+    var dataStr = "SELECT * FROM OAuthInfo";
     var token = null;
     db.transaction(function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS OAuthToken(bearer_token TEXT)');
+        //tx.executeSql('CREATE TABLE IF NOT EXISTS OAuthToken(bearer_token TEXT)');
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
             token = rs.rows.item(rs.rows.length - 1).bearer_token;

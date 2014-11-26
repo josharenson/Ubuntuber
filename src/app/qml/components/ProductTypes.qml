@@ -15,6 +15,11 @@ Rectangle {
         id: productTypesModel
     }
 
+    Component {
+        id: productTypesDelegate
+
+    }
+
     ListView {
         id: productTypesView
         anchors.fill: parent
