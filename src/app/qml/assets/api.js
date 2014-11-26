@@ -96,11 +96,15 @@ function bearerTokenExpiresIn() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "SELECT * FROM OAuthInfo";
     var expires = null;
+    try {
     db.transaction(function(tx) {
         var rs = tx.executeSql(dataStr);
         if (rs.rows.item(0)) {
             expires = rs.rows.item(rs.rows.length - 1).expires_in;
         }
     });
+    } catch (ex) {
+        expires = null;
+    }
     return expires;
 }
