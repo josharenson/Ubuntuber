@@ -37,7 +37,7 @@ StyledPage {
         id: product_types
 
         anchors.top: parent.top
-        //anchors.topMargin: 2
+        anchors.topMargin: 2
         anchors.left: parent.left
         anchors.leftMargin: 2
         anchors.right: parent.right

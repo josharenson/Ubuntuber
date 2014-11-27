@@ -9,10 +9,13 @@ Rectangle {
     property var coords;
     property int lastX: 0
 
-    //height: childRect.height; width: parent.width;
+    height: productTypesView.itemHeight; width: parent.width;
 
-    //radius: 8
-    color: "lightgrey"
+    // Expand and contract at the same rate as the OptionSelector
+    // This value came from trial and error
+    Behavior on height { SmoothedAnimation { velocity: 500 } }
+
+    color: "transparent"
 
     ListModel {
         id: productTypesModel
@@ -28,7 +31,8 @@ Rectangle {
 
     OptionSelector {
         id: productTypesView
-        anchors.centerIn: parent
+        anchors.top: parent.top
+        //anchors.centerIn: parent
         //text: "Ride Type"
         model: productTypesModel
         delegate: productTypesDelegate
