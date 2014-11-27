@@ -25,7 +25,8 @@ Rectangle {
         id: productTypesDelegate
         OptionSelectorDelegate {
             text: display_name
-            iconSource: image
+            constrainImage: true
+            iconSource: image // FIXME make the width a resonable value
         }
     }
 
