@@ -48,6 +48,17 @@ StyledPage {
             anchorPoint.y: height / 2
         }
 
+        // Not loaded as a MapQuickItem so that it's position stays static
+        DestinationLocationSymbol {
+            id: destination_marker
+
+            anchors.centerIn: parent
+            onDestinationRequested: {
+                console.log("DM: " + map.toCoordinate(x + (width / 2) ,y + (height)));
+                console.log("SM: " + currentLocation);
+            }
+        }
+
         ZoomControl {
             id: zoomControl
 
