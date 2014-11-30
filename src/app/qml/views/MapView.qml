@@ -83,6 +83,11 @@ StyledPage {
             onZoomIn: map.zoomLevel += 1
             onZoomOut: map.zoomLevel -= 1
         }
+
+        MouseArea {
+            anchors.fill: parent
+            onDoubleClicked: map.zoomLevel += 1
+        }
     }
 
     ProductTypes {
