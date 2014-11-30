@@ -37,6 +37,15 @@ StyledPage {
             name: "osm"
         }
 
+
+        // Mark current location with a fancy symbol
+        MapQuickItem {
+            id: position_marker
+            sourceItem: CurrentLocationSymbol{}
+            coordinate: currentLocation
+            z: 3
+        }
+
         ZoomControl {
             id: zoomControl
 
