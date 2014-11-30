@@ -44,6 +44,8 @@ StyledPage {
             sourceItem: CurrentLocationSymbol{}
             coordinate: currentLocation
             z: 3
+            anchorPoint.x: width / 2
+            anchorPoint.y: height / 2
         }
 
         ZoomControl {
