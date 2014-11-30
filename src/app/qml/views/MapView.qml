@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtLocation 5.0
 import QtPositioning 5.3
 import Ubuntu.Components 1.1
+import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
@@ -54,8 +55,17 @@ StyledPage {
 
             anchors.centerIn: parent
             onDestinationRequested: {
-                console.log("DM: " + map.toCoordinate(x + (width / 2) ,y + (height)));
-                console.log("SM: " + currentLocation);
+                var destLocation = map.toCoordinate(x + (width / 2) ,y + (height))
+                API.get_price_estimate(
+                    currentLocation.latitude,
+                    currentLocation.longitude,
+                    destLocation.latitude,
+                    destLocation.longitude,
+                    displayPriceEstimate
+                );
+            }
+            function displayPriceEstimate(data) {
+                console.log(data)
             }
         }
 

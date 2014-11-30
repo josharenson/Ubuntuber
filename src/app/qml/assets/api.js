@@ -2,6 +2,31 @@
 .import "config.js" as Config
 .import "ajaxmee.js" as Ajaxmee
 
+function get_price_estimate(start_latitude, start_longitude,
+        end_latitude, end_longitude, success_callback) {
+    var url = Config.uberApi.baseUrl + Config.uberApi.priceEstimateUrl;
+
+    var data = {
+        "start_latitude"    : start_latitude,
+        "start_longitude"   : start_longitude,
+        "end_latitude"      : end_latitude,
+        "end_longitude"     : end_longitude
+    };
+
+    var payload =   [
+                        {"Authorization" : "Bearer " + String(bearerToken())},
+                        data
+                    ]
+
+    Ajaxmee.ajaxmee('GET', url, payload,
+            success_callback,
+            function(status, statusText) {
+                console.log('error', status, statusText);
+            })
+}
+
+
+// FIXME make this look more like get_price_estimate to help abstraction
 function get_product_types(success_callback, data) {
     var url = Config.uberApi.baseUrl + Config.uberApi.productsUrl;
     var payload =   [
@@ -15,6 +40,7 @@ function get_product_types(success_callback, data) {
                 console.log('error', status, statusText)
             })
 }
+
 
 /******** OAuth Stuff ********/
 

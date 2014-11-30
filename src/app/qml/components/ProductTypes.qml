@@ -32,9 +32,8 @@ Rectangle {
 
     OptionSelector {
         id: productTypesView
+
         anchors.top: parent.top
-        //anchors.centerIn: parent
-        //text: "Ride Type"
         model: productTypesModel
         delegate: productTypesDelegate
         onCurrentlyExpandedChanged: {
