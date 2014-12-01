@@ -54,6 +54,7 @@ StyledPage {
             id: destination_marker
 
             anchors.centerIn: parent
+            z: 10
             onDestinationRequested: {
                 var destLocation = map.toCoordinate(x + (width / 2) ,y + (height))
                 API.get_price_estimate(
@@ -76,6 +77,7 @@ StyledPage {
             anchors.leftMargin: units.gu(1)
             anchors.bottom: parent.bottom
             anchors.bottomMargin: units.gu(4)
+            z: 10
         }
 
         Connections {
