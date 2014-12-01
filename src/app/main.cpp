@@ -17,6 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Author: Josh Arenson <josharenson@gmail.com>
+ *
+ * The majority of this file was taken from ubuntu-terminal-app and was
+ * authored by Michael Zanetti, Riccardo Padovani, and David Planella
  */
 
 #include <QtGui/QGuiApplication>
