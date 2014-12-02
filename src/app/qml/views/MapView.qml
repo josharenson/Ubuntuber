@@ -70,8 +70,42 @@ StyledPage {
             }
         }
 
+        UbuntuShape {
+            id: center_on_current_position
+
+            height: zoom_control.height / 2
+            width: zoom_control.width
+
+            color: "lightgrey"
+            anchors.right: parent.right
+            anchors.rightMargin: units.gu(1)
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: units.gu(4)
+            z: 10
+
+            Rectangle {
+                id: center_on_current_position_image_holder
+
+                height: parent.height * 0.7; width: parent.width * 0.7
+                anchors.centerIn: parent
+                color: "transparent"
+
+                Image {
+                    anchors.fill: parent
+                    fillMode: Image.PreserveAspectFit
+                    source: "../assets/center-current-location.png"
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: map.center = currentLocation
+            }
+
+        }
+
         ZoomControl {
-            id: zoomControl
+            id: zoom_control
 
             anchors.left: parent.left
             anchors.leftMargin: units.gu(1)
@@ -81,7 +115,7 @@ StyledPage {
         }
 
         Connections {
-            target: zoomControl
+            target: zoom_control
             onZoomIn: map.zoomLevel += 1
             onZoomOut: map.zoomLevel -= 1
         }
