@@ -19,6 +19,23 @@
  
 import QtQuick 2.0
 import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+import "../assets/api.js" as API
 
-Page { signal changeViews(string viewName) }
+Popover {
+    id: popover
 
+    property var startLocation;
+    property var destLocation;
+
+    Rectangle {
+        height: units.gu(40)
+        color: "grey"
+
+        Text {
+            anchors.fill: parent
+            text: destLocation.latitude
+        }
+    }
+
+}

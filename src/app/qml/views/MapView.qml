@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2014 Josh Arenson
+ *
+ * Authors:
+ *   Josh Arenson <josharenson@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
 import QtQuick 2.0
 import QtLocation 5.0
 import QtPositioning 5.3
@@ -8,7 +27,9 @@ import "../components"
 StyledPage {
     id: map_view
 
+    signal pricingDataReceived();
     property var currentLocation: null
+    property var destLocation: null
 
     anchors.fill: parent
     visible: false
@@ -56,7 +77,7 @@ StyledPage {
             anchors.centerIn: parent
             z: 10
             onDestinationRequested: {
-                var destLocation = map.toCoordinate(x + (width / 2) ,y + (height))
+                destLocation = map.toCoordinate(x + (width / 2) ,y + (height))
                 API.get_price_estimate(
                     currentLocation.latitude,
                     currentLocation.longitude,
@@ -66,7 +87,26 @@ StyledPage {
                 );
             }
             function displayPriceEstimate(data) {
-                console.log(data)
+                pricingDataReceived();
+            }
+        }
+
+        PriceEstimateDialog {
+            id: price_estimate_dialog
+
+            startLocation: currentLocation
+            z: 100
+
+            Connections {
+                target: map_view
+                onDestLocationChanged: {
+                    console.log();
+                }
+            }
+
+            Connections {
+                target: destination_marker
+                onPricingDataReceived: Ubuntu.PopupUtils.open(price_estimate_dialog);
             }
         }
 
