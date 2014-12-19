@@ -19,7 +19,7 @@ set(CONFIG_FILE qtber.config)
 set(DESKTOP_FILE "${PROJECT_NAME}.desktop")
 set(APP_HARDCODE qtber) # Launchpad id
 set(MAIN_QML qtber.qml)
-set(ICON_FILE qtber.svg)
+set(ICON_FILE qtber.png)
 set(EXEC "${APP_NAME}")
 set(UBUNTU_MANIFEST_PATH "manifest.json.in" CACHE INTERNAL "Relative path to the manifest file")
 
@@ -97,4 +97,3 @@ add_definitions("-DICON_FILE_PATH=\"${ICON}\"")
 
 #add_subdirectory(tests)
 add_subdirectory(src)
-add_subdirectory(tests)

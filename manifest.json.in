@@ -1,10 +1,10 @@
 {
     "description" : "An Uber clone for Ubuntu Touch",
-    "framework" : "ubuntu-sdk-14.10-dev2",
+    "framework" : "ubuntu-sdk-14.10",
     "architecture" : "armhf",
     "hooks" : {
         "qtber": {
-            "apparmor" : "qtber-apparmor.json",
+            "apparmor" : "qtber.apparmor",
             "desktop" : "@DESKTOP_FILE@"
         }
     },
