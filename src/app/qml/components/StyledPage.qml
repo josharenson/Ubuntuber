@@ -19,6 +19,13 @@
 
 import QtQuick 2.3
 import Ubuntu.Components 1.1
+import Ubuntu.Connectivity 1.0
 
-Page { signal changeViews(string viewName) }
+Page {
+    id: root
+
+    signal changeViews(string viewName)
+
+    OfflineModal {visible: !NetworkingStatus.online}
+}
 
