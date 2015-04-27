@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2014 Josh Arenson
- *
- * Authors:
- *   Josh Arenson <josharenson@gmail.com>
+ * Copyright (C) 2014, 2015 Josh Arenson
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 .import QtQuick.LocalStorage 2.0 as Sql
 .import "config.js" as Config
 .import "ajaxmee.js" as Ajaxmee
@@ -65,17 +62,29 @@ function get_product_types(success_callback, data) {
 
 var dbConArgs = ["QtBer", "1.0", "QtBer Local Data", 1];
 
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
 function bearerTokenIsValid() {
-    return (Date.now() < bearerTokenExpiresIn());
+    var expirationDate = parseInt((new Date(bearerTokenExpiresIn())).getTime());
+    var now = parseInt(Date.now());
+    return (expirationDate > now);
 }
 
 // Useful for debugging or logging out
 function dropDbTable() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "DROP TABLE OAuthInfo";
-    db.transaction(function(tx) {
-        tx.executeSql(dataStr);
-    });
+    try {
+        db.transaction(function(tx) {
+            tx.executeSql(dataStr);
+        });
+    } catch (ex) {
+        return;
+    }
 
 }
 
@@ -100,7 +109,10 @@ function saveBearerToken(url) {
 
     var bearerToken = match_bearerToken[1];
     var expiresIn = match_expiresIn[1];
-    expiresIn += Date.now();
+
+    // Response is in seconds. Convert to days because dates are hard.
+    expiresIn = (((expiresIn / 60) / 60) / 24)
+    expiresIn = addDays(Date.now(), expiresIn)
 
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "INSERT INTO OAuthInfo VALUES(?, ?)";
