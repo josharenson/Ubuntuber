@@ -39,10 +39,13 @@ int main(int argc, char *argv[])
     QQuickView* view = new QQuickView();
     if (parser.isSet(clearSettingsOption)) {
         view->rootContext()->setContextProperty("clearSettings", true);
+    } else {
+        view->rootContext()->setContextProperty("clearSettings", false);
     }
 
     /* View Setup */
     QString qmlfile;
+    // FIXME I feel like we should know where our files are installed....
     QStringList paths = QStandardPaths::standardLocations(QStandardPaths::DataLocation);
     paths.prepend(QDir::currentPath());
     paths.prepend(QCoreApplication::applicationDirPath());

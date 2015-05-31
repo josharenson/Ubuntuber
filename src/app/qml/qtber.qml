@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2014 Josh Arenson
- *
- * Authors:
- *   Josh Arenson <josharenson@gmail.com>
+ * Copyright (C) 2015 Josh Arenson
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.0
+import QtQuick 2.3
 import Ubuntu.Components 1.0
 import "assets/api.js" as API
 import "components/"
@@ -31,7 +28,11 @@ MainView {
     height: units.gu(71)
 
     Component.onCompleted: {
-        console.log("clearSettings is: " + clearSettings);
+        if (clearSettings) {
+            console.log("Clearing settings...");
+            API.dropDbTable();
+        }
+
         var initialView = API.bearerTokenIsValid() ?
             "views/MapView.qml" : "views/HomeView.qml";
         page_stack.push(Qt.resolvedUrl(initialView))
