@@ -36,11 +36,32 @@ int main(int argc, char *argv[])
     parser.addOption(clearSettingsOption);
     parser.process(app);
 
+    QQuickView* view = new QQuickView();
+    if (parser.isSet(clearSettingsOption)) {
+        view->rootContext()->setContextProperty("clearSettings", true);
+    } else {
+        view->rootContext()->setContextProperty("clearSettings", false);
+    }
+
     /* View Setup */
-    QQuickView view;
-    view.setResizeMode(QQuickView::SizeRootObjectToView);
-    view.setSource(QUrl::fromLocalFile("/qml/qtber.qml"));
-    view.show();
+    QString qmlfile;
+    // FIXME I feel like we should know where our files are installed....
+    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::DataLocation);
+    paths.prepend(QDir::currentPath());
+    paths.prepend(QCoreApplication::applicationDirPath());
+
+    foreach (const QString &path, paths) {
+        QFileInfo fi(path + "/qml/qtber.qml");
+        qDebug() << "Trying to load QML from:" << path + "/qml/qtber.qml";
+        if (fi.exists()) {
+            qmlfile = path + "/qml/qtber.qml";
+            break;
+        }
+    }
+    qDebug() << "Using main qml file from:" << qmlfile;
+    view->setResizeMode(QQuickView::SizeRootObjectToView);
+    view->setSource(QUrl::fromLocalFile(qmlfile));
+    view->show();
 
     return app.exec();
 }
