@@ -31,6 +31,7 @@ MainView {
     height: units.gu(71)
 
     Component.onCompleted: {
+        console.log("clearSettings is: " + clearSettings);
         var initialView = API.bearerTokenIsValid() ?
             "views/MapView.qml" : "views/HomeView.qml";
         page_stack.push(Qt.resolvedUrl(initialView))
