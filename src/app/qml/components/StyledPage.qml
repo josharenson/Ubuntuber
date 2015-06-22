@@ -26,6 +26,6 @@ Page {
 
     signal changeViews(string viewName)
 
-    OfflineModal {visible: !NetworkingStatus.online}
+    OfflineModal {visible: !NetworkingStatus.Online}
 }
 
