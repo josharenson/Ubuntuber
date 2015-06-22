@@ -1,8 +1,5 @@
 /*
- * Copyright (C) 2014 Josh Arenson
- *
- * Authors:
- *   Josh Arenson <josharenson@gmail.com>
+ * Copyright (C) 2014, 2015 Josh Arenson
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-import QtQuick 2.0
+
+import QtQuick 2.3
 import Ubuntu.Components 1.1
 
 Rectangle {
