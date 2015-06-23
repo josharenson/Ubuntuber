@@ -22,6 +22,8 @@ import "../assets/api.js" as API
 Rectangle {
     id: productTypes
 
+    property alias _SETTINGS_INDEX: productTypesModel.count;
+
     property var coords;
     property int lastX: 0
 
@@ -60,6 +62,12 @@ Rectangle {
                 parent.height = itemHeight + 4
             }
         }
+        onDelegateClicked: {
+            console.log("Clicked: " + selectedIndex + " _SETTINGS_INDEX:" + _SETTINGS_INDEX);
+            //if (selectedIndex == _SETTINGS_INDEX) {
+                productTypes.parent.changeViews("SettingsView.qml");
+            //}
+        }
     }
 
     Component.onCompleted: {
@@ -81,7 +89,7 @@ Rectangle {
 
             // Append the settings icon to the ProductType selector
             var settings = {};
-            settings["index"] = productTypesModel.count;
+            settings["index"] = index++;
             settings["display_name"] = "Settings"
             settings["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
             productTypesModel.append(settings);
