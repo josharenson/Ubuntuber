@@ -67,7 +67,7 @@ Rectangle {
         console.log(API.get_product_types(onSuccess, location));
 
         function onSuccess(data) {
-            // FIXME a string is returned for some reason so we eval to make it
+            // Astring is returned for some reason so we eval to make it
             // an Object
             var data = eval(data);
             var index = 0;
@@ -78,6 +78,13 @@ Rectangle {
                     console.log("Added: " + product["display_name"]);
                 }
             );
+
+            // Append the settings icon to the ProductType selector
+            var settings = {};
+            settings["index"] = productTypesModel.count;
+            settings["display_name"] = "Settings"
+            settings["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
+            productTypesModel.append(settings);
         }
     }
 }

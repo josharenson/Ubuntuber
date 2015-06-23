@@ -53,7 +53,7 @@ StyledPage {
         width: parent.width
 
         center: currentLocation
-        zoomLevel: 15
+        zoomLevel: 18
 
         plugin: Plugin {
             name: "osm"

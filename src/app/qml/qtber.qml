@@ -45,6 +45,12 @@ MainView {
             ignoreUnknownSignals: true
             target: page_stack.currentPage
             onChangeViews: {
+                // FIXME This is a hack to make the back button of the page stack
+                // behave as we want it to
+                if (viewName === "MapView.qml") {
+                    console.log("JOSH: clearing page stack");
+                    page_stack.clear();
+                }
                 console.log("Loding view: views/" + viewName)
                 page_stack.push(Qt.resolvedUrl("views/" + viewName))
                 console.log("Current page is: " + page_stack.currentPage)
