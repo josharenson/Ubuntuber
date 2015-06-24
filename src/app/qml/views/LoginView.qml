@@ -24,8 +24,6 @@ import "../assets/api.js" as API
 StyledPage {
     id: login_view
 
-    anchors.fill: parent
-
     WebView {
         id: web_view
 
