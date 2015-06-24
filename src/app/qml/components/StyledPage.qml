@@ -1,9 +1,6 @@
 /*
  * Copyright (C) 2014, 2015 Josh Arenson
  *
- * Authors:
- *   Josh Arenson <josharenson@gmail.com>
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3.
@@ -18,13 +15,14 @@
  */
 
 import QtQuick 2.3
-import Ubuntu.Components 1.1
+import Ubuntu.Components 1.2
 import Ubuntu.Connectivity 1.0
 
 Page {
     id: root
 
     signal changeViews(string viewName)
+    signal clearPageStack(string viewName)
 
     OfflineModal {visible: !NetworkingStatus.Online}
 }

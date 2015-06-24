@@ -88,6 +88,11 @@ function dropDbTable() {
 
 }
 
+function logout() {
+    // An Alias for dropping the db table
+    return dropDbTable();
+}
+
 function urlHasBearerToken(url) {
     return url.toString().indexOf("access_token") > -1 ? true : false;
 }

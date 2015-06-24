@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014, 2015 Josh Arenson
+ * Copyright (C) 2015 Josh Arenson
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,35 +15,32 @@
  */
 
 import QtQuick 2.3
-import Ubuntu.Web 0.2
 import Ubuntu.Components 1.2
-import "../components"
-
-import "../assets/api.js" as API
+import Ubuntu.Components.ListItems 1.2 as ListItem
+import "../../components"
 
 StyledPage {
-    id: login_view
+    id: about_page
 
-    WebView {
-        id: web_view
+    title: "About"
+    visible: false
 
+    Column {
         anchors.fill: parent
 
-        url: API.authorizationUrl()
-        onUrlChanged: {
-            if (API.saveBearerToken(url)) {
-                // Clear the stack because the only way a user should go back from
-                // here is if they logout
-                login_view.clearPageStack("MapView.qml");
-            }
+        ListItem.Standard {
+            text: "An Uber Clone for Ubuntu by Josh Arenson"
         }
 
-        LoadingAnimation {
-            id: loading_animation
-
-            height: units.gu(1); width: parent.width;
-            visible: web_view.loading
-            anchors.top: parent.top
+        ListItem.Standard {
+            TextArea {
+                anchors.fill: parent
+                readOnly: true
+                text:"This project is licensed under the terms of the GPLv3. This project uses Open Street Maps and ajaxme (https://github.com/peppelorum/ajaxmee). Please see these projects to view their licenses.
+                "
+            }
         }
     }
 }
+
+

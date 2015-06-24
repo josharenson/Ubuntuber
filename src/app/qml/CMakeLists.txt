@@ -1,5 +1,5 @@
 file(GLOB ROOT_QML_FILES *.qml)
-file(GLOB VIEW_FILES views/*.qml)
+file(GLOB_RECURSE VIEW_FILES views/*.qml)
 file(GLOB COMPONENT_FILES components/*.qml)
 file(GLOB QML_TEST_FILES tests/*)
 file(GLOB ASSET_FILES assets/*)

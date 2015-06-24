@@ -20,7 +20,7 @@
 import QtQuick 2.3
 import QtLocation 5.4
 import QtPositioning 5.2
-import Ubuntu.Components 1.1
+import Ubuntu.Components 1.2
 import "../assets/api.js" as API
 import "../components"
 
@@ -31,8 +31,15 @@ StyledPage {
     property var currentLocation: null
     property var destLocation: null
 
-    anchors.fill: parent
+    title: "QTBER"
     visible: false
+
+    head.actions: [
+        Action {
+            iconSource: "../assets/settings_icon.svg"
+            onTriggered: changeViews("../views/SettingsView.qml")
+        }
+    ]
 
     PositionSource {
         id: positionSource
@@ -53,7 +60,7 @@ StyledPage {
         width: parent.width
 
         center: currentLocation
-        zoomLevel: 15
+        zoomLevel: 18
 
         plugin: Plugin {
             name: "osm"

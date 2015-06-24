@@ -15,7 +15,7 @@
  */
 
 import QtQuick 2.3
-import Ubuntu.Components 1.0
+import Ubuntu.Components 1.2
 import "assets/api.js" as API
 import "components/"
 
@@ -28,6 +28,7 @@ MainView {
     height: units.gu(71)
 
     Component.onCompleted: {
+        // CLI Option
         if (clearSettings) {
             console.log("Clearing settings...");
             API.dropDbTable();
@@ -44,9 +45,18 @@ MainView {
         Connections {
             ignoreUnknownSignals: true
             target: page_stack.currentPage
-            onChangeViews: {
+            onChangeViews: d.changeViews(viewName);
+            onClearPageStack: {
+                page_stack.clear();
+                d.changeViews(viewName);
+            }
+        }
+
+        QtObject {
+            id: d
+            function changeViews(viewName) {
                 console.log("Loding view: views/" + viewName)
-                page_stack.push(Qt.resolvedUrl("views/" + viewName))
+                page_stack.push(Qt.resolvedUrl("views/" + viewName));
                 console.log("Current page is: " + page_stack.currentPage)
             }
         }
