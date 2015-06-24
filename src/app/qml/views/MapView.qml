@@ -27,9 +27,8 @@ import "../components"
 StyledPage {
     id: map_view
 
-    signal pricingDataReceived();
     property var currentLocation: null
-    property var destLocation: null
+    property var pickupLocation: null
 
     title: "QTBER"
     visible: false
@@ -78,42 +77,13 @@ StyledPage {
         }
 
         // Not loaded as a MapQuickItem so that it's position stays static
-        DestinationLocationSymbol {
-            id: destination_marker
+        PickupLocationSymbol {
+            id: pickupLocationSymbol
 
             anchors.centerIn: parent
             z: 10
-            onDestinationRequested: {
-                destLocation = map.toCoordinate(x + (width / 2) ,y + (height))
-                API.get_price_estimate(
-                    currentLocation.latitude,
-                    currentLocation.longitude,
-                    destLocation.latitude,
-                    destLocation.longitude,
-                    displayPriceEstimate
-                );
-            }
-            function displayPriceEstimate(data) {
-                pricingDataReceived();
-            }
-        }
-
-        PriceEstimateDialog {
-            id: price_estimate_dialog
-
-            startLocation: currentLocation
-            z: 100
-
-            Connections {
-                target: map_view
-                onDestLocationChanged: {
-                    console.log();
-                }
-            }
-
-            Connections {
-                target: destination_marker
-                onPricingDataReceived: Ubuntu.PopupUtils.open(price_estimate_dialog);
+            onPickupRequested: {
+                pickupLocation = map.toCoordinate(x + (width / 2) ,y + (height))
             }
         }
 

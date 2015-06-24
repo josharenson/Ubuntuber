@@ -20,7 +20,7 @@ import Ubuntu.Components 1.2
 Rectangle {
     id: root
 
-    signal destinationRequested()
+    signal pickupRequested()
 
     height: the_text.paintedHeight + units.gu(10)
     width: the_text.paintedWidth + units.gu(2)
@@ -36,13 +36,13 @@ Rectangle {
 
             anchors.centerIn: parent
             color: "lightgrey"
-            text: "Request A Quote"
+            text: "Set Pickup Location"
         }
 
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                destinationRequested()
+                pickupRequested()
             }
         }
     }
