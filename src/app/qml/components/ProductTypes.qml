@@ -62,12 +62,9 @@ Rectangle {
                 parent.height = itemHeight + 4
             }
         }
-        onDelegateClicked: {
-            console.log("Clicked: " + selectedIndex + " _SETTINGS_INDEX:" + _SETTINGS_INDEX);
-            //if (selectedIndex == _SETTINGS_INDEX) {
-                productTypes.parent.changeViews("SettingsView.qml");
-            //}
-        }
+
+        //onDelegateClicked: {
+        //}
     }
 
     Component.onCompleted: {
@@ -87,12 +84,6 @@ Rectangle {
                 }
             );
 
-            // Append the settings icon to the ProductType selector
-            var settings = {};
-            settings["index"] = index++;
-            settings["display_name"] = "Settings"
-            settings["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
-            productTypesModel.append(settings);
         }
     }
 }

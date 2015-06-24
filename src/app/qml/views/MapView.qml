@@ -31,8 +31,15 @@ StyledPage {
     property var currentLocation: null
     property var destLocation: null
 
-    anchors.fill: parent
+    title: "QTBER"
     visible: false
+
+    head.actions: [
+        Action {
+            iconSource: "../assets/settings_icon.svg"
+            onTriggered: changeViews("../views/SettingsView.qml")
+        }
+    ]
 
     PositionSource {
         id: positionSource
