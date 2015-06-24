@@ -20,7 +20,7 @@
 import QtQuick 2.3
 import QtLocation 5.4
 import QtPositioning 5.2
-import Ubuntu.Components 1.1
+import Ubuntu.Components 1.2
 import "../assets/api.js" as API
 import "../components"
 

@@ -15,7 +15,7 @@
  */
 
 import QtQuick 2.3
-import Ubuntu.Components 1.0
+import Ubuntu.Components 1.2
 import "assets/api.js" as API
 import "components/"
 
