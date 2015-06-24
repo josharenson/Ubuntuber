@@ -17,35 +17,29 @@
 import QtQuick 2.3
 import Ubuntu.Components 1.2
 import Ubuntu.Components.ListItems 1.2 as ListItem
-import "../assets/api.js" as API
-import "../components"
+import "../../components"
 
 StyledPage {
-    id: settingsPage
+    id: about_page
 
-    title: "Settings"
+    title: "About"
     visible: false
 
     Column {
         anchors.fill: parent
 
         ListItem.Standard {
-            text: "About"
-            iconSource: Qt.resolvedUrl("../assets/about_icon.svg");
-            onClicked: {
-                changeViews("settings/AboutView.qml");
-            }
+            text: "An Uber Clone for Ubuntu by Josh Arenson"
         }
 
         ListItem.Standard {
-            text: "Logout"
-            iconSource: Qt.resolvedUrl("../assets/logout_icon.svg");
-            onClicked: {
-                API.logout();
-                clearPageStack(Qt.resolvedUrl("HomeView.qml"));
+            TextArea {
+                anchors.fill: parent
+                readOnly: true
+                text:"This project is licensed under the terms of the GPLv3. This project uses Open Street Maps and ajaxme (https://github.com/peppelorum/ajaxmee). Please see these projects to view their licenses.
+                "
             }
         }
-
     }
 }
 
