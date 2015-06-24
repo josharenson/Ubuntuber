@@ -17,12 +17,14 @@
 import QtQuick 2.3
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3 as ListItem
+import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
     id: settingsPage
 
     anchors.fill: parent
+    visible: false
 
     Column {
         width: parent.width
@@ -40,7 +42,12 @@ StyledPage {
         ListItem.Standard {
             text: "Logout"
             iconSource: Qt.resolvedUrl("../assets/logout_icon.svg");
+            onClicked: {
+                API.logout();
+                clearPageStack("HomeView.qml");
+            }
         }
+
     }
 }
 

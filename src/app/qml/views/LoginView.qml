@@ -34,7 +34,9 @@ StyledPage {
         url: API.authorizationUrl()
         onUrlChanged: {
             if (API.saveBearerToken(url)) {
-                login_view.changeViews("MapView.qml");
+                // Clear the stack because the only way a user should go back from
+                // here is if they logout
+                login_view.clearPageStack("MapView.qml");
             }
         }
 

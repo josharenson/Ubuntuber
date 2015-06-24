@@ -28,6 +28,7 @@ MainView {
     height: units.gu(71)
 
     Component.onCompleted: {
+        // CLI Option
         if (clearSettings) {
             console.log("Clearing settings...");
             API.dropDbTable();
@@ -44,15 +45,18 @@ MainView {
         Connections {
             ignoreUnknownSignals: true
             target: page_stack.currentPage
-            onChangeViews: {
-                // FIXME This is a hack to make the back button of the page stack
-                // behave as we want it to
-                if (viewName === "MapView.qml") {
-                    console.log("JOSH: clearing page stack");
-                    page_stack.clear();
-                }
+            onChangeViews: d.changeViews(viewName);
+            onClearPageStack: {
+                page_stack.clear();
+                d.changeViews(viewName);
+            }
+        }
+
+        QtObject {
+            id: d
+            function changeViews(viewName) {
                 console.log("Loding view: views/" + viewName)
-                page_stack.push(Qt.resolvedUrl("views/" + viewName))
+                page_stack.push(Qt.resolvedUrl("views/" + viewName));
                 console.log("Current page is: " + page_stack.currentPage)
             }
         }
