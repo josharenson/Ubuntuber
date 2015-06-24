@@ -16,23 +16,18 @@
 
 import QtQuick 2.3
 import Ubuntu.Components 1.2
-import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.2 as ListItem
 import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
     id: settingsPage
 
-    anchors.fill: parent
+    title: "Settings"
     visible: false
 
     Column {
-        width: parent.width
-
-        ListItem.Header{
-            text: "Settings"
-        }
-        ListItem.Divider{}
+        anchors.fill: parent
 
         ListItem.Standard {
             text: "About"
