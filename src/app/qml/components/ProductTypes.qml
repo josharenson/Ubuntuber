@@ -22,10 +22,11 @@ import "../assets/api.js" as API
 Rectangle {
     id: productTypes
 
-    property alias _SETTINGS_INDEX: productTypesModel.count;
+    signal productSelected(string productDisplayName)
 
-    property var coords;
+    property var coords: null
     property int lastX: 0
+    property string selectedProduct: ""
 
     height: productTypesView.itemHeight; width: parent.width;
 
@@ -63,14 +64,17 @@ Rectangle {
             }
         }
 
-        //onDelegateClicked: {
-        //}
+        onDelegateClicked: {
+            var product = productTypesModel.get(index);
+            productSelected(product["display_name"]);
+        }
     }
 
     Component.onCompleted: {
         var location = {"latitude":coords.latitude, "longitude":coords.longitude};
         console.log(API.get_product_types(onSuccess, location));
 
+        // FIXME handle the case where there are no available products
         function onSuccess(data) {
             // Astring is returned for some reason so we eval to make it
             // an Object
@@ -84,6 +88,9 @@ Rectangle {
                 }
             );
 
+            // If a user wants the first result, they won't click it,
+            // so this will update anyone listening
+            productSelected(productTypesModel.get(0)["display_name"]);
         }
     }
 }
