@@ -22,11 +22,9 @@ import "../assets/api.js" as API
 Rectangle {
     id: productTypes
 
-    signal productSelected(string productDisplayName)
-
     property var coords: null
-    property int lastX: 0
-    property string selectedProduct: ""
+
+    signal productSelected(string productDisplayName)
 
     height: productTypesView.itemHeight; width: parent.width;
 
