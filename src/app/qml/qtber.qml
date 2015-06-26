@@ -55,9 +55,7 @@ MainView {
         QtObject {
             id: d
             function changeViews(viewName) {
-                console.log("Loding view: views/" + viewName)
                 page_stack.push(Qt.resolvedUrl("views/" + viewName));
-                console.log("Current page is: " + page_stack.currentPage)
             }
         }
     }
