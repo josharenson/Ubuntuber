@@ -70,25 +70,37 @@ Rectangle {
 
     Component.onCompleted: {
         var location = {"latitude":coords.latitude, "longitude":coords.longitude};
-        API.get_product_types(onSuccess, location);
+        API.get_product_types(onSuccess, noProductsFound, location);
 
-        // FIXME handle the case where there are no available products
+        function noProductsFound() {
+            var product = {};
+            product["display_name"] = "NO CARS AVAILABLE"
+            // FIXME: Make this a resonable icon
+            product["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
+            productTypesModel.append(product);
+        }
+
         function onSuccess(data) {
             // Astring is returned for some reason so we eval to make it
             // an Object
             var data = eval(data);
             var index = 0;
-            data["products"].forEach(
-                function(product) {
-                    product["index"] = index++;
-                    productTypesModel.append(product);
-                    console.log("Added: " + product["display_name"]);
-                }
-            );
 
-            // If a user wants the first result, they won't click it,
-            // so this will update anyone listening
-            productSelected(productTypesModel.get(0)["display_name"]);
+            if (data === undefined || data["products"].length == 0) {
+                noProductsFound();
+            } else {
+                data["products"].forEach(
+                    function(product) {
+                        product["index"] = index++;
+                        productTypesModel.append(product);
+                        console.log("Added: " + product["display_name"]);
+                    }
+                );
+
+                // If a user wants the first result, they won't click it,
+                // so this will update anyone listening
+                productSelected(productTypesModel.get(0)["display_name"]);
+            }
         }
     }
 }
