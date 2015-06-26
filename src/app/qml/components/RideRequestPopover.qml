@@ -42,6 +42,11 @@ Popover {
             anchors.centerIn: parent
             width: parent.width * 0.8
             text: "Fare estimate"
+
+            onClicked: {
+                changeViews("FareEstimateView.qml");
+                PopupUtils.close(popover);
+            }
         }
     }
 }
