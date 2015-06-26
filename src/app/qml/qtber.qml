@@ -34,7 +34,7 @@ MainView {
             API.dropDbTable();
         }
 
-        var initialView = API.bearerTokenIsValid() ?
+        var initialView = API.bearerTokenIsValid() || testWithoutConnectivity ?
             "views/MapView.qml" : "views/HomeView.qml";
         page_stack.push(Qt.resolvedUrl(initialView))
     }
