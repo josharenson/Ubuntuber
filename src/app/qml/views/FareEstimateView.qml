@@ -16,37 +16,10 @@
 
 import QtQuick 2.3
 import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.2 as ListItem
-import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
-    id: settingsPage
-
-    title: "Settings"
-    visible: false
-
-    Column {
-        anchors.fill: parent
-
-        ListItem.Standard {
-            text: "About"
-            iconSource: Qt.resolvedUrl("../assets/about_icon.svg");
-            onClicked: {
-                changeViews("settings/AboutView.qml");
-            }
-        }
-
-        ListItem.Standard {
-            text: "Logout"
-            iconSource: Qt.resolvedUrl("../assets/logout_icon.svg");
-            onClicked: {
-                API.logout();
-                clearPageStack("HomeView.qml");
-            }
-        }
-
-    }
+    title: "Fare Estimate"
 }
 
 

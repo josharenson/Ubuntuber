@@ -1,9 +1,6 @@
 /*
  * Copyright (C) 2014, 2015 Josh Arenson
  *
- * Authors:
- *   Josh Arenson <josharenson@gmail.com>
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3.
@@ -21,14 +18,12 @@ import QtQuick 2.3
 import QtLocation 5.4
 import QtPositioning 5.2
 import Ubuntu.Components 1.2
+import Ubuntu.Components.Popups 1.2
 import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
     id: map_view
-
-    property var currentLocation: null
-    property var pickupLocation: null
 
     title: "QTBER"
     visible: false
@@ -40,6 +35,14 @@ StyledPage {
         }
     ]
 
+    QtObject {
+        id: d
+
+        property var currentLocation: null
+        property var pickupLocation: null
+        property string selectedProductType: ""
+    }
+
     PositionSource {
         id: positionSource
 
@@ -47,7 +50,7 @@ StyledPage {
         active: true
 
         onPositionChanged: {
-            currentLocation = positionSource.position.coordinate;
+            d.currentLocation = positionSource.position.coordinate;
         }
     }
 
@@ -58,7 +61,7 @@ StyledPage {
         anchors.bottom: parent.bottom
         width: parent.width
 
-        center: currentLocation
+        center: d.currentLocation
         zoomLevel: 18
 
         plugin: Plugin {
@@ -70,7 +73,7 @@ StyledPage {
         MapQuickItem {
             id: position_marker
             sourceItem: CurrentLocationSymbol{}
-            coordinate: currentLocation
+            coordinate: d.currentLocation
             z: 3
             anchorPoint.x: width / 2
             anchorPoint.y: height / 2
@@ -83,7 +86,13 @@ StyledPage {
             anchors.centerIn: parent
             z: 10
             onPickupRequested: {
-                pickupLocation = map.toCoordinate(x + (width / 2) ,y + (height))
+                d.pickupLocation = map.toCoordinate(x + (width / 2) ,y + (height))
+                PopupUtils.open(
+                    Qt.resolvedUrl("../components/RideRequestPopover.qml"),
+                    pickupLocationSymbol,
+                    {"selectedProductType": d.selectedProductType}
+                )
+
             }
         }
 
@@ -116,7 +125,7 @@ StyledPage {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: map.center = currentLocation
+                onClicked: map.center = d.currentLocation
             }
 
         }
@@ -153,6 +162,9 @@ StyledPage {
         anchors.right: parent.right
         anchors.rightMargin: 2
 
-        coords: currentLocation
+        coords: d.currentLocation
+        onProductSelected: {
+            d.selectedProductType = productDisplayName
+        }
     }
 }
