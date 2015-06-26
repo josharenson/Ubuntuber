@@ -22,6 +22,7 @@ import "../assets/api.js" as API
 Rectangle {
     id: productTypes
 
+    readonly property bool carsAvailable: d.carsAvailable
     property var coords: null
 
     signal productSelected(string productDisplayName)
@@ -33,6 +34,11 @@ Rectangle {
     Behavior on height { SmoothedAnimation { velocity: 500 } }
 
     color: "transparent"
+
+    QtObject {
+        id: d
+        property bool carsAvailable: false
+    }
 
     ListModel {
         id: productTypesModel
@@ -89,6 +95,7 @@ Rectangle {
             if (data === undefined || data["products"].length == 0) {
                 noProductsFound();
             } else {
+                carsAvailable = true;
                 data["products"].forEach(
                     function(product) {
                         product["index"] = index++;
