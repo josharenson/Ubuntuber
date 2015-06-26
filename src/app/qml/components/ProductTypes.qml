@@ -70,7 +70,7 @@ Rectangle {
 
     Component.onCompleted: {
         var location = {"latitude":coords.latitude, "longitude":coords.longitude};
-        console.log(API.get_product_types(onSuccess, location));
+        API.get_product_types(onSuccess, location);
 
         // FIXME handle the case where there are no available products
         function onSuccess(data) {

@@ -24,13 +24,11 @@ MainView {
 
     objectName: "main"
     applicationName: "com.gmail.josharenson.qtber"
-    width:  units.gu(40)
-    height: units.gu(71)
+    implicitWidth:  units.gu(40)
+    implicitHeight: units.gu(71)
 
     Component.onCompleted: {
-        // CLI Option
         if (clearSettings) {
-            console.log("Clearing settings...");
             API.dropDbTable();
         }
 
