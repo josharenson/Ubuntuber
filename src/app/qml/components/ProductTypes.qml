@@ -95,7 +95,7 @@ Rectangle {
             if (data === undefined || data["products"].length == 0) {
                 noProductsFound();
             } else {
-                carsAvailable = true;
+                d.carsAvailable = true;
                 data["products"].forEach(
                     function(product) {
                         product["index"] = index++;

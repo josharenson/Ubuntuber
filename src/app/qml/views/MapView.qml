@@ -30,7 +30,7 @@ StyledPage {
 
     head.actions: [
         Action {
-            iconSource: "../assets/settings_icon.svg"
+            iconName: "settings"
             onTriggered: changeViews("../views/SettingsView.qml")
         }
     ]
