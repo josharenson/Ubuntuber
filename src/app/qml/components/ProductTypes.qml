@@ -23,7 +23,7 @@ Rectangle {
     id: productTypes
 
     readonly property bool carsAvailable: d.carsAvailable
-    property var coords: null
+    property var coords: null // To be set from outside
 
     signal productSelected(string productDisplayName)
 

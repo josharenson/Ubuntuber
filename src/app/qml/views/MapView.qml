@@ -85,6 +85,11 @@ StyledPage {
 
             anchors.centerIn: parent
             z: 10
+
+            canClick: product_types.carsAvailable
+            text: product_types.carsAvailable ?
+                "Set Pickup Location" : "NO CARS AVAILABLE";
+
             onPickupRequested: {
                 d.pickupLocation = map.toCoordinate(x + (width / 2) ,y + (height))
                 PopupUtils.open(
@@ -92,7 +97,6 @@ StyledPage {
                     pickupLocationSymbol,
                     {"selectedProductType": d.selectedProductType}
                 )
-
             }
         }
 
