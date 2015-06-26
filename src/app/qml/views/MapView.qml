@@ -23,7 +23,7 @@ import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
-    id: map_view
+    id: mapView
 
     title: "QTBER"
     visible: false
@@ -57,7 +57,7 @@ StyledPage {
     Map {
         id: map
 
-        anchors.top: product_types.bottom
+        anchors.top: productTypes.bottom
         anchors.bottom: parent.bottom
         width: parent.width
 
@@ -71,7 +71,7 @@ StyledPage {
 
         // Mark current location with a fancy symbol
         MapQuickItem {
-            id: position_marker
+            id: positionMarker
             sourceItem: CurrentLocationSymbol{}
             coordinate: d.currentLocation
             z: 3
@@ -86,8 +86,8 @@ StyledPage {
             anchors.centerIn: parent
             z: 10
 
-            canClick: product_types.carsAvailable
-            text: product_types.carsAvailable ?
+            canClick: productTypes.carsAvailable
+            text: productTypes.carsAvailable ?
                 "Set Pickup Location" : "NO CARS AVAILABLE";
 
             onPickupRequested: {
@@ -118,7 +118,7 @@ StyledPage {
         }
 
         ZoomControl {
-            id: zoom_control
+            id: zoomControl
 
             anchors.left: parent.left
             anchors.leftMargin: units.gu(1)
@@ -128,7 +128,7 @@ StyledPage {
         }
 
         Connections {
-            target: zoom_control
+            target: zoomControl
             onZoomIn: map.zoomLevel += 1
             onZoomOut: map.zoomLevel -= 1
         }
@@ -140,7 +140,7 @@ StyledPage {
     }
 
     ProductTypes {
-        id: product_types
+        id: proproductTypes
 
         anchors.top: parent.top
         anchors.topMargin: 2
