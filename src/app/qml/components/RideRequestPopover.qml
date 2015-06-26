@@ -22,7 +22,26 @@ Popover {
     id: popover
     property string selectedProductType: ""
 
-    Button {
-        text: "Request " + selectedProductType
+    Rectangle {
+        id: leftButtonContainer
+        height: units.gu(5); width: parent.width / 2;
+        anchors.left: parent.left
+        Button {
+            anchors.centerIn: parent
+            width: parent.width * 0.8
+            text: "Order " + selectedProductType
+        }
+    }
+
+    Rectangle {
+        id: rightButtonContainer
+        height: units.gu(5); width: parent.width / 2;
+        anchors.right: parent.right
+
+        Button {
+            anchors.centerIn: parent
+            width: parent.width * 0.8
+            text: "Fare estimate"
+        }
     }
 }
