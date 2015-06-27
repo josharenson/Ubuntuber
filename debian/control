@@ -9,8 +9,11 @@ Build-Depends:  cmake,
                 intltool,
                 libconfig++-dev,
                 qtbase5-dev,
+                qt5-default,
                 qtdeclarative5-dev,
-                qt5-default
+                qtdeclarative5-qtmultimedia-plugin,
+                qtdeclarative5-ubuntu-ui-toolkit-plugin (>= 1.2) | qtdeclarative5-ubuntu-ui-toolkid-plugin-gles (>= 1.2)
+
 
 Package: qtber
 Architecture: any
