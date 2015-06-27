@@ -74,40 +74,55 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        var location = {"latitude":coords.latitude, "longitude":coords.longitude};
-        API.get_product_types(onSuccess, noProductsFound, location);
+    onCoordsChanged: {
+        if (coords != null)
+            updateProducts(coords);
+    }
 
-        function noProductsFound() {
-            var product = {};
-            product["display_name"] = "NO CARS AVAILABLE"
-            // FIXME: Make this a resonable icon
-            product["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
-            productTypesModel.append(product);
+    property bool locked: false
+    function updateProducts(coords) {
+        if (locked) {
+            return;
+        } else {
+            locked = true;
         }
 
-        function onSuccess(data) {
-            // Astring is returned for some reason so we eval to make it
-            // an Object
-            var data = eval(data);
-            var index = 0;
+        var location = {"latitude":coords.latitude, "longitude":coords.longitude};
+        productTypesModel.clear();
+        API.get_product_types(onSuccess, noProductsFound, location);
+    }
 
-            if (data === undefined || data["products"].length == 0) {
-                noProductsFound();
-            } else {
-                d.carsAvailable = true;
-                data["products"].forEach(
-                    function(product) {
-                        product["index"] = index++;
-                        productTypesModel.append(product);
-                        console.log("Added: " + product["display_name"]);
-                    }
-                );
+    function noProductsFound() {
+        var product = {};
+        product["display_name"] = "NO CARS AVAILABLE"
+        // FIXME: Make this a resonable icon
+        product["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
+        productTypesModel.append(product);
+        locked = false;
+    }
 
-                // If a user wants the first result, they won't click it,
-                // so this will update anyone listening
-                productSelected(productTypesModel.get(0)["display_name"]);
-            }
+    function onSuccess(data) {
+        // Astring is returned for some reason so we eval to make it
+        // an Object
+        var data = eval(data);
+        var index = 0;
+
+        if (data === undefined || data["products"].length == 0) {
+            noProductsFound();
+        } else {
+            d.carsAvailable = true;
+            data["products"].forEach(
+                function(product) {
+                    product["index"] = index++;
+                    productTypesModel.append(product);
+                    console.log("Added: " + product["display_name"]);
+                }
+            );
+
+            // If a user wants the first result, they won't click it,
+            // so this will update anyone listening
+            productSelected(productTypesModel.get(0)["display_name"]);
+            locked = false;
         }
     }
 }

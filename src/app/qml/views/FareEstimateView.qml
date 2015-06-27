@@ -16,10 +16,40 @@
 
 import QtQuick 2.3
 import Ubuntu.Components 1.2
+import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
     title: "Fare Estimate"
+
+    implicitHeight: units.gu(70)
+    implicitWidth: units.gu(41)
+
+    QtObject {
+        id: d
+        readonly property real buttonWidth: parent.width * 0.8
+    }
+
+    TextField {
+        id: destinationTextField
+
+        anchors.top: parent.top
+        anchors.topMargin: units.gu(5)
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: d.buttonWidth
+        placeholderText: "Enter destination address..."
+    }
+
+    Button {
+        id: submit
+
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: units.gu(5)
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: d.buttonWidth
+        color: UbuntuColors.green
+        text: "Get Fare Estimate"
+    }
 }
 
 

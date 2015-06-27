@@ -103,8 +103,8 @@ StyledPage {
         Button {
             id: centerMapButton
 
-            height: zoom_control.height / 2
-            width: zoom_control.width
+            height: zoomControl.height / 2
+            width: zoomControl.width
 
             anchors.right: parent.right
             anchors.rightMargin: units.gu(1)
@@ -140,7 +140,7 @@ StyledPage {
     }
 
     ProductTypes {
-        id: proproductTypes
+        id: productTypes
 
         anchors.top: parent.top
         anchors.topMargin: 2
