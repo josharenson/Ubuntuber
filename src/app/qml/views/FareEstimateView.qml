@@ -20,6 +20,8 @@ import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
+    property var startCoords: null
+
     title: "Fare Estimate"
 
     implicitHeight: units.gu(70)
@@ -49,6 +51,19 @@ StyledPage {
         width: d.buttonWidth
         color: UbuntuColors.green
         text: "Get Fare Estimate"
+
+        onClicked: {
+            var endCoords = API.get_reverse_geocode(destinationTextField.text,
+                                                    onSuccess, onFailure);
+        }
+    }
+
+    function onFailure(data) {
+        console.log("FAILED: ");
+    }
+
+    function onSuccess(data) {
+        console.log("SUCCESS: " + data);
     }
 }
 

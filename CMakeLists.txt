@@ -12,7 +12,6 @@ option(INSTALL_TESTS "Install the tests on make install" on)
 option(CLICK_MODE "Installs to a contained location" off)
 
 set(APP_NAME qtber)
-set(CONFIG_FILE qtber.config)
 set(DESKTOP_FILE "${PROJECT_NAME}.desktop")
 set(APP_HARDCODE qtber) # Launchpad id
 set(MAIN_QML qtber.qml)
@@ -84,9 +83,6 @@ configure_file(${DESKTOP_FILE}.in ${DESKTOP_FILE})
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
     DESTINATION ${DESKTOP_DIR})
-
-add_definitions("-DCONFIG_FILE_PATH=\"${CMAKE_INSTALL_PREFIX}/${DESKTOP_DIR}/${CONFIG_FILE}\"")
-install(FILES ${CONFIG_FILE} DESTINATION ${DESKTOP_DIR})
 
 # Install Icon
 add_definitions("-DICON_FILE_PATH=\"${ICON}\"")

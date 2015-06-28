@@ -54,6 +54,12 @@ function get_product_types(success_callback, failure_callback, data) {
             success_callback, failure_callback)
 }
 
+function get_reverse_geocode(address_string, success_callback, failure_callback) {
+    var url = Config.nominatimApi.searchUrl;
+    var payload = {"q":address_string, "format":"json"};
+    Ajaxmee.ajaxmee('GET', url, payload,
+                    success_callback, failure_callback);
+}
 
 /******** OAuth Stuff ********/
 

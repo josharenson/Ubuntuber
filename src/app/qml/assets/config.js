@@ -1,3 +1,8 @@
+var nominatimApi =
+{
+    "searchUrl" : "https://nominatim.openstreetmap.org/search/"
+};
+
 var uberApi =
 {
     "authorizationUrl"  : "https://login.uber.com/oauth/authorize",
