@@ -39,6 +39,8 @@ StyledPage {
         id: d
 
         property var currentLocation: null
+
+        // pickupLocation is the center of the map, which is where the symbol is
         property var pickupLocation: null
         property string selectedProductType: ""
     }
@@ -91,11 +93,14 @@ StyledPage {
                 "Set Pickup Location" : "NO CARS AVAILABLE";
 
             onPickupRequested: {
-                d.pickupLocation = map.toCoordinate(x + (width / 2) ,y + (height))
+                d.pickupLocation = map.toCoordinate(map.x + (map.width / 2) ,map.y + (map.height))
                 PopupUtils.open(
                     Qt.resolvedUrl("../components/RideRequestPopover.qml"),
                     pickupLocationSymbol,
-                    {"selectedProductType": d.selectedProductType}
+                    {
+                        "selectedProductType": d.selectedProductType,
+                        "startCoords" : d.currentLocation
+                    }
                 )
             }
         }

@@ -18,7 +18,7 @@
 .import "config.js" as Config
 .import "ajaxmee.js" as Ajaxmee
 
-function get_price_estimate(start_latitude, start_longitude,
+function get_fare_estimate(start_latitude, start_longitude,
         end_latitude, end_longitude, success_callback) {
     var url = Config.uberApi.baseUrl + Config.uberApi.priceEstimateUrl;
 
@@ -46,7 +46,7 @@ function get_price_estimate(start_latitude, start_longitude,
 function get_product_types(success_callback, failure_callback, data) {
     var url = Config.uberApi.baseUrl + Config.uberApi.productsUrl;
     var payload =   [
-                        {"Authorization": "Bearer " + String(bearerToken())},
+                       {"Authorization": "Bearer " + String(bearerToken())},
                         data
                     ]
 
@@ -54,6 +54,8 @@ function get_product_types(success_callback, failure_callback, data) {
             success_callback, failure_callback)
 }
 
+// FIXME: Include "viewbox" with the query to prioritize results that are near
+// the start location
 function get_reverse_geocode(address_string, success_callback, failure_callback) {
     var url = Config.nominatimApi.searchUrl;
     var payload = {"q":address_string, "format":"json"};

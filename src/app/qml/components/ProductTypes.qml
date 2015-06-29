@@ -86,13 +86,12 @@ Rectangle {
         } else {
             locked = true;
         }
-
         var location = {"latitude":coords.latitude, "longitude":coords.longitude};
         productTypesModel.clear();
         API.get_product_types(onSuccess, noProductsFound, location);
     }
 
-    function noProductsFound() {
+    function noProductsFound(data) {
         var product = {};
         product["display_name"] = "NO CARS AVAILABLE"
         // FIXME: Make this a resonable icon

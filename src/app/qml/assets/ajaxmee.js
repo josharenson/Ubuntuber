@@ -29,7 +29,6 @@ var ajaxmee = function(method, url, params, successCallback, errorCallback) {
         }
 
         params = serialize(params);
-        console.log("SERIALIZED PARAMS: " + params);
         var doc = new XMLHttpRequest();
         console.log(method + " " + url);
         if (method == 'GET') {

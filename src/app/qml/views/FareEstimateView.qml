@@ -29,17 +29,75 @@ StyledPage {
 
     QtObject {
         id: d
-        readonly property real buttonWidth: parent.width * 0.8
+        readonly property real buttonWidth: parent.width * 0.9
+
+        function reverseGeocodeSubmit(addressString) {
+            API.get_reverse_geocode(addressString,
+                onReverseGeocodeSuccess, onReverseGeocodeFailure);
+        }
+
+        // TODO: Implement something nice here
+        function onReverseGeocodeFailure(data) {
+            console.log("FAILED: ");
+        }
+
+        function onReverseGeocodeSuccess(data) {
+            console.log(data);
+            var data = eval(data);
+            for (var i = 0; i < data.length; i++) {
+                addressModel.append(data[i]);
+            }
+        }
+
+        function onFareEstimateSuccess(data) {
+            console.log(data);
+        }
+
+        function onFareEstimateFailure(data) {
+           console.log("FAILED: ");
+        }
     }
 
     TextField {
         id: destinationTextField
 
         anchors.top: parent.top
-        anchors.topMargin: units.gu(5)
+        anchors.topMargin: units.gu(1)
         anchors.horizontalCenter: parent.horizontalCenter
         width: d.buttonWidth
         placeholderText: "Enter destination address..."
+
+        onAccepted: d.reverseGeocodeSubmit(text);
+    }
+
+    ListModel {
+        id: addressModel
+    }
+
+    Component {
+        id: addressDelegate
+        OptionSelectorDelegate {
+            text: display_name
+        }
+    }
+
+    OptionSelector {
+        anchors.top: destinationTextField.bottom
+        anchors.topMargin: units.gu(1)
+        expanded: true
+
+        delegate: addressDelegate
+        model: addressModel
+
+        onDelegateClicked: {
+            var address = addressModel.get(index);
+            var endLat = address["lat"];
+            var endLon = address["lon"];
+            var startLat = startCoords["lat"];
+            var startLon = startCoords["lon"];
+            API.get_fare_estimate(startLat, startLon, endLat, endLon,
+               d.onFareEstimateSuccess, d.onFareEstimateFailure);
+        }
     }
 
     Button {
@@ -50,20 +108,9 @@ StyledPage {
         anchors.horizontalCenter: parent.horizontalCenter
         width: d.buttonWidth
         color: UbuntuColors.green
-        text: "Get Fare Estimate"
+        text: "Search"
 
-        onClicked: {
-            var endCoords = API.get_reverse_geocode(destinationTextField.text,
-                                                    onSuccess, onFailure);
-        }
-    }
-
-    function onFailure(data) {
-        console.log("FAILED: ");
-    }
-
-    function onSuccess(data) {
-        console.log("SUCCESS: " + data);
+        onClicked: d.reverseGeocodeSubmit(destinationTextField.text);
     }
 }
 
