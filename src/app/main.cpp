@@ -34,6 +34,16 @@ int main(int argc, char *argv[])
         {"c","clear-settings"},
         "Clear the application's persistent settings.");
     parser.addOption(clearSettingsOption);
+
+    QCommandLineOption testFakeLocationOption(
+            {"f","test-fake-location"},
+            "Set the current location to the fixed value specified in the config file");
+    parser.addOption(testFakeLocationOption);
+
+    QCommandLineOption testWithoutConnectivityOption(
+            {"t","test-no-connectivity"},
+            "Bypass authentication and allow testing of the application with no internet connectivity.");
+    parser.addOption(testWithoutConnectivityOption);
     parser.process(app);
 
     QQuickView* view = new QQuickView();
@@ -41,6 +51,18 @@ int main(int argc, char *argv[])
         view->rootContext()->setContextProperty("clearSettings", true);
     } else {
         view->rootContext()->setContextProperty("clearSettings", false);
+    }
+
+    if (parser.isSet(testFakeLocationOption)) {
+        view->rootContext()->setContextProperty("testFakeLocation", true);
+    } else {
+        view->rootContext()->setContextProperty("testFakeLocation", false);
+    }
+
+    if (parser.isSet(testWithoutConnectivityOption)) {
+        view->rootContext()->setContextProperty("testWithoutConnectivity", true);
+    } else {
+        view->rootContext()->setContextProperty("testWithoutConnectivity", false);
     }
 
     /* View Setup */

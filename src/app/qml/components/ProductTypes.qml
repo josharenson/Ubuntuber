@@ -22,7 +22,8 @@ import "../assets/api.js" as API
 Rectangle {
     id: productTypes
 
-    property var coords: null
+    readonly property bool carsAvailable: d.carsAvailable
+    property var coords: null // To be set from outside
 
     signal productSelected(string productDisplayName)
 
@@ -33,6 +34,11 @@ Rectangle {
     Behavior on height { SmoothedAnimation { velocity: 500 } }
 
     color: "transparent"
+
+    QtObject {
+        id: d
+        property bool carsAvailable: false
+    }
 
     ListModel {
         id: productTypesModel
@@ -68,16 +74,42 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        var location = {"latitude":coords.latitude, "longitude":coords.longitude};
-        console.log(API.get_product_types(onSuccess, location));
+    onCoordsChanged: {
+        if (coords != null)
+            updateProducts(coords);
+    }
 
-        // FIXME handle the case where there are no available products
-        function onSuccess(data) {
-            // Astring is returned for some reason so we eval to make it
-            // an Object
-            var data = eval(data);
-            var index = 0;
+    property bool locked: false
+    function updateProducts(coords) {
+        if (locked) {
+            return;
+        } else {
+            locked = true;
+        }
+        var location = {"latitude":coords.latitude, "longitude":coords.longitude};
+        productTypesModel.clear();
+        API.get_product_types(onSuccess, noProductsFound, location);
+    }
+
+    function noProductsFound(data) {
+        var product = {};
+        product["display_name"] = "NO CARS AVAILABLE"
+        // FIXME: Make this a resonable icon
+        product["image"] = Qt.resolvedUrl("../assets/settings_icon.svg");
+        productTypesModel.append(product);
+        locked = false;
+    }
+
+    function onSuccess(data) {
+        // Astring is returned for some reason so we eval to make it
+        // an Object
+        var data = eval(data);
+        var index = 0;
+
+        if (data === undefined || data["products"].length == 0) {
+            noProductsFound();
+        } else {
+            d.carsAvailable = true;
             data["products"].forEach(
                 function(product) {
                     product["index"] = index++;
@@ -89,6 +121,7 @@ Rectangle {
             // If a user wants the first result, they won't click it,
             // so this will update anyone listening
             productSelected(productTypesModel.get(0)["display_name"]);
+            locked = false;
         }
     }
 }

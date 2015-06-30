@@ -20,6 +20,8 @@ import Ubuntu.Components.Popups 1.2
 
 Popover {
     id: popover
+
+    property var startCoords: null
     property string selectedProductType: ""
 
     Rectangle {
@@ -44,6 +46,7 @@ Popover {
             text: "Fare estimate"
 
             onClicked: {
+                console.log(startCoords);
                 changeViews("FareEstimateView.qml");
                 PopupUtils.close(popover);
             }

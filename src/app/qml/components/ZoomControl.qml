@@ -26,53 +26,19 @@ Rectangle {
     height: units.gu(8); width: units.gu(4)
     color: "transparent"
 
-    UbuntuShape {
-        id: zoomIn
-
-        height: parent.height / 2
-        width: parent.width
-
+    Button {
+        height: parent.height / 2.1; width: parent.width
         anchors.top: parent.top
 
-        color: "lightgrey"
-
-        Text {
-            text: "+"
-            anchors.centerIn: parent
-            font.pointSize: units.gu(2)
-            font.weight: Font.Bold
-        }
-
-        MouseArea {
-            id: zoomInMouseArea
-
-            anchors.fill: parent
-            onClicked: zoomControl.zoomIn();
-        }
+        iconName: "list-add"
+        onClicked: zoomControl.zoomIn();
     }
 
-    UbuntuShape {
-        id: zoomOut
-
-        height: parent.height / 2
-        width: parent.width
-
+    Button {
+        height: parent.height / 2.1; width: parent.width
         anchors.bottom: parent.bottom
 
-        color: "lightgrey"
-
-        Text {
-            text: "-"
-            anchors.centerIn: parent
-            font.pointSize: units.gu(2)
-            font.weight: Font.Bold
-        }
-
-        MouseArea {
-            id: zoomOutMouseArea
-
-            anchors.fill: parent
-            onClicked: zoomControl.zoomOut();
-        }
+        iconName: "list-remove"
+        onClicked: zoomControl.zoomOut();
     }
 }

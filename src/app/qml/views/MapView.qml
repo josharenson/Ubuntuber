@@ -23,14 +23,14 @@ import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
-    id: map_view
+    id: mapView
 
     title: "QTBER"
     visible: false
 
     head.actions: [
         Action {
-            iconSource: "../assets/settings_icon.svg"
+            iconName: "settings"
             onTriggered: changeViews("../views/SettingsView.qml")
         }
     ]
@@ -39,6 +39,8 @@ StyledPage {
         id: d
 
         property var currentLocation: null
+
+        // pickupLocation is the center of the map, which is where the symbol is
         property var pickupLocation: null
         property string selectedProductType: ""
     }
@@ -57,7 +59,7 @@ StyledPage {
     Map {
         id: map
 
-        anchors.top: product_types.bottom
+        anchors.top: productTypes.bottom
         anchors.bottom: parent.bottom
         width: parent.width
 
@@ -71,7 +73,7 @@ StyledPage {
 
         // Mark current location with a fancy symbol
         MapQuickItem {
-            id: position_marker
+            id: positionMarker
             sourceItem: CurrentLocationSymbol{}
             coordinate: d.currentLocation
             z: 3
@@ -85,53 +87,43 @@ StyledPage {
 
             anchors.centerIn: parent
             z: 10
+
+            canClick: productTypes.carsAvailable
+            text: productTypes.carsAvailable ?
+                "Set Pickup Location" : "NO CARS AVAILABLE";
+
             onPickupRequested: {
-                d.pickupLocation = map.toCoordinate(x + (width / 2) ,y + (height))
+                d.pickupLocation = map.toCoordinate(map.x + (map.width / 2) ,map.y + (map.height))
                 PopupUtils.open(
                     Qt.resolvedUrl("../components/RideRequestPopover.qml"),
                     pickupLocationSymbol,
-                    {"selectedProductType": d.selectedProductType}
+                    {
+                        "selectedProductType": d.selectedProductType,
+                        "startCoords" : d.currentLocation
+                    }
                 )
-
             }
         }
 
-        UbuntuShape {
-            id: center_on_current_position
+        Button {
+            id: centerMapButton
 
-            height: zoom_control.height / 2
-            width: zoom_control.width
+            height: zoomControl.height / 2
+            width: zoomControl.width
 
-            color: "lightgrey"
             anchors.right: parent.right
             anchors.rightMargin: units.gu(1)
             anchors.bottom: parent.bottom
             anchors.bottomMargin: units.gu(4)
             z: 10
 
-            Rectangle {
-                id: center_on_current_position_image_holder
-
-                height: parent.height * 0.7; width: parent.width * 0.7
-                anchors.centerIn: parent
-                color: "transparent"
-
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: "../assets/center-current-location.png"
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: map.center = d.currentLocation
-            }
+            iconName: "location"
+            onClicked: map.center = d.currentLocation
 
         }
 
         ZoomControl {
-            id: zoom_control
+            id: zoomControl
 
             anchors.left: parent.left
             anchors.leftMargin: units.gu(1)
@@ -141,7 +133,7 @@ StyledPage {
         }
 
         Connections {
-            target: zoom_control
+            target: zoomControl
             onZoomIn: map.zoomLevel += 1
             onZoomOut: map.zoomLevel -= 1
         }
@@ -153,7 +145,7 @@ StyledPage {
     }
 
     ProductTypes {
-        id: product_types
+        id: productTypes
 
         anchors.top: parent.top
         anchors.topMargin: 2

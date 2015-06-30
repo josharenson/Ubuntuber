@@ -2,9 +2,6 @@ project(com.gmail.josharenson.qtber C CXX)
 cmake_minimum_required(VERSION 2.8.9)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-find_program(INTLTOOL_MERGE intltool-merge)
-find_program(INTLTOOL_EXTRACT intltool-extract)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-permissive -pedantic -Wall -Wextra -fPIC")
 
@@ -15,7 +12,6 @@ option(INSTALL_TESTS "Install the tests on make install" on)
 option(CLICK_MODE "Installs to a contained location" off)
 
 set(APP_NAME qtber)
-set(CONFIG_FILE qtber.config)
 set(DESKTOP_FILE "${PROJECT_NAME}.desktop")
 set(APP_HARDCODE qtber) # Launchpad id
 set(MAIN_QML qtber.qml)
@@ -88,12 +84,9 @@ configure_file(${DESKTOP_FILE}.in ${DESKTOP_FILE})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}
     DESTINATION ${DESKTOP_DIR})
 
-add_definitions("-DCONFIG_FILE_PATH=\"${CMAKE_INSTALL_PREFIX}/${DESKTOP_DIR}/${CONFIG_FILE}\"")
-install(FILES ${CONFIG_FILE} DESTINATION ${DESKTOP_DIR})
-
 # Install Icon
 add_definitions("-DICON_FILE_PATH=\"${ICON}\"")
 #install(FILES ${ICON_FILE} DESTINATION ${ICON})
 
-#add_subdirectory(tests)
 add_subdirectory(src)
+add_subdirectory(tests)

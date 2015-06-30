@@ -28,6 +28,7 @@ StyledPage {
     readonly property int w_ten_percent: parent.width  * .1
 
     BackgroundVideo {
+        id: backgroundVideo
         video_source: "../assets/wth-02.mpg"
     }
 

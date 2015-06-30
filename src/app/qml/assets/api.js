@@ -18,7 +18,7 @@
 .import "config.js" as Config
 .import "ajaxmee.js" as Ajaxmee
 
-function get_price_estimate(start_latitude, start_longitude,
+function get_fare_estimate(start_latitude, start_longitude,
         end_latitude, end_longitude, success_callback) {
     var url = Config.uberApi.baseUrl + Config.uberApi.priceEstimateUrl;
 
@@ -43,20 +43,25 @@ function get_price_estimate(start_latitude, start_longitude,
 
 
 // FIXME make this look more like get_price_estimate to help abstraction
-function get_product_types(success_callback, data) {
+function get_product_types(success_callback, failure_callback, data) {
     var url = Config.uberApi.baseUrl + Config.uberApi.productsUrl;
     var payload =   [
-                        {"Authorization": "Bearer " + String(bearerToken())},
+                       {"Authorization": "Bearer " + String(bearerToken())},
                         data
                     ]
 
     Ajaxmee.ajaxmee('GET', url, payload,
-            success_callback,
-            function(status, statusText) {
-                console.log('error', status, statusText)
-            })
+            success_callback, failure_callback)
 }
 
+// FIXME: Include "viewbox" with the query to prioritize results that are near
+// the start location
+function get_reverse_geocode(address_string, success_callback, failure_callback) {
+    var url = Config.nominatimApi.searchUrl;
+    var payload = {"q":address_string, "format":"json"};
+    Ajaxmee.ajaxmee('GET', url, payload,
+                    success_callback, failure_callback);
+}
 
 /******** OAuth Stuff ********/
 
@@ -145,12 +150,16 @@ function bearerToken() {
     var db = Sql.LocalStorage.openDatabaseSync(dbConArgs);
     var dataStr = "SELECT * FROM OAuthInfo";
     var token = null;
-    db.transaction(function(tx) {
+    try {
+        db.transaction(function(tx) {
         var rs = tx.executeSql(dataStr);
-        if (rs.rows.item(0)) {
-            token = rs.rows.item(rs.rows.length - 1).bearer_token;
-        }
-    });
+            if (rs.rows.item(0)) {
+                token = rs.rows.item(rs.rows.length - 1).bearer_token;
+            }
+        });
+    } catch(ex) {
+        token = null;
+    }
     return token;
 }
 

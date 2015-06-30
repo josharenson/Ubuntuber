@@ -24,17 +24,15 @@ MainView {
 
     objectName: "main"
     applicationName: "com.gmail.josharenson.qtber"
-    width:  units.gu(40)
-    height: units.gu(71)
+    implicitWidth:  units.gu(40)
+    implicitHeight: units.gu(71)
 
     Component.onCompleted: {
-        // CLI Option
         if (clearSettings) {
-            console.log("Clearing settings...");
             API.dropDbTable();
         }
 
-        var initialView = API.bearerTokenIsValid() ?
+        var initialView = API.bearerTokenIsValid() || testWithoutConnectivity ?
             "views/MapView.qml" : "views/HomeView.qml";
         page_stack.push(Qt.resolvedUrl(initialView))
     }
@@ -55,9 +53,7 @@ MainView {
         QtObject {
             id: d
             function changeViews(viewName) {
-                console.log("Loding view: views/" + viewName)
                 page_stack.push(Qt.resolvedUrl("views/" + viewName));
-                console.log("Current page is: " + page_stack.currentPage)
             }
         }
     }

@@ -20,6 +20,9 @@ import Ubuntu.Components 1.2
 Rectangle {
     id: root
 
+    property bool canClick: false
+    property string text: ""
+
     signal pickupRequested()
 
     height: the_text.paintedHeight + units.gu(10)
@@ -36,11 +39,12 @@ Rectangle {
 
             anchors.centerIn: parent
             color: "lightgrey"
-            text: "Set Pickup Location"
+            text: root.text
         }
 
         MouseArea {
             anchors.fill: parent
+            enabled: root.canClick
             onClicked: {
                 pickupRequested()
             }
