@@ -21,7 +21,7 @@ import Ubuntu.Connectivity 1.0
 Page {
     id: root
 
-    signal changeViews(string viewName)
+    signal changeViews(string viewName, var params)
     signal clearPageStack(string viewName)
 
     OfflineModal {visible: !NetworkingStatus.Online}

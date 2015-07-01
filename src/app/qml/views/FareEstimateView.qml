@@ -16,16 +16,14 @@
 
 import QtQuick 2.3
 import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.2 as ListItem
 import "../assets/api.js" as API
 import "../components"
 
 StyledPage {
-    property var startCoords: null
+    id: fareEstimateView
 
     title: "Fare Estimate"
-
-    implicitHeight: units.gu(70)
-    implicitWidth: units.gu(41)
 
     QtObject {
         id: d
@@ -44,6 +42,7 @@ StyledPage {
         function onReverseGeocodeSuccess(data) {
             console.log(data);
             var data = eval(data);
+            addressModel.clear();
             for (var i = 0; i < data.length; i++) {
                 addressModel.append(data[i]);
             }
@@ -76,32 +75,37 @@ StyledPage {
 
     Component {
         id: addressDelegate
-        OptionSelectorDelegate {
-            text: display_name
+        Item {
+            height: theText.contentHeight
+            width: parent.width
+            TextArea {
+                id: theText
+                width: parent.width
+                readOnly: true
+
+                text: display_name
+            }
+            ListItem.ThinDivider {}
         }
     }
 
-    OptionSelector {
-        anchors.top: destinationTextField.bottom
-        anchors.topMargin: units.gu(1)
-        expanded: true
-
-        delegate: addressDelegate
-        model: addressModel
-
-        onDelegateClicked: {
-            var address = addressModel.get(index);
-            var endLat = address["lat"];
-            var endLon = address["lon"];
-            var startLat = startCoords["lat"];
-            var startLon = startCoords["lon"];
-            API.get_fare_estimate(startLat, startLon, endLat, endLon,
-               d.onFareEstimateSuccess, d.onFareEstimateFailure);
+    UbuntuListView {
+        anchors {
+            top: destinationTextField.bottom
+            topMargin: units.gu(1)
+            left: parent.left
+            right: parent.right
+            bottom: submitButton.top
+            bottomMargin: units.gu(1)
         }
+        clip: true
+
+        model: addressModel
+        delegate: addressDelegate
     }
 
     Button {
-        id: submit
+        id: submitButton
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: units.gu(5)

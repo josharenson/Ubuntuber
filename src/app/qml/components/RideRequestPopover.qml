@@ -46,8 +46,8 @@ Popover {
             text: "Fare estimate"
 
             onClicked: {
-                console.log(startCoords);
-                changeViews("FareEstimateView.qml");
+                var params = {}
+                changeViews("FareEstimateView.qml", params);
                 PopupUtils.close(popover);
             }
         }

@@ -43,7 +43,10 @@ MainView {
         Connections {
             ignoreUnknownSignals: true
             target: page_stack.currentPage
-            onChangeViews: d.changeViews(viewName);
+            onChangeViews: {
+                console.log(params);
+                d.changeViews(viewName, params);
+            }
             onClearPageStack: {
                 page_stack.clear();
                 d.changeViews(viewName);
