@@ -41,7 +41,7 @@ StyledPage {
         property var currentLocation: null
 
         // pickupLocation is the center of the map, which is where the symbol is
-        property var pickupLocation: null
+        property var pickupLocation: map.center
         property string selectedProductType: ""
     }
 
@@ -70,7 +70,6 @@ StyledPage {
             name: "osm"
         }
 
-
         // Mark current location with a fancy symbol
         MapQuickItem {
             id: positionMarker
@@ -82,6 +81,8 @@ StyledPage {
         }
 
         // Not loaded as a MapQuickItem so that it's position stays static
+        // This must be at the EXACT CENTER of the map, or cars will arrive at the
+        // wrong place!
         PickupLocationSymbol {
             id: pickupLocationSymbol
 
@@ -99,7 +100,7 @@ StyledPage {
                     pickupLocationSymbol,
                     {
                         "selectedProductType": d.selectedProductType,
-                        "startCoords" : d.currentLocation
+                        "startCoords" : d.pickupLocation
                     }
                 )
             }
@@ -154,7 +155,7 @@ StyledPage {
         anchors.right: parent.right
         anchors.rightMargin: 2
 
-        coords: d.currentLocation
+        coords: d.pickupLocation
         onProductSelected: {
             d.selectedProductType = productDisplayName
         }
